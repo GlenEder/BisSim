@@ -57,18 +57,26 @@ app.post('/apiGetBusinesses', (req, res) => {
 
 
 //create business post
-app.post('/createBusiness', (req, res) => {
+app.post('/createBusiness', async (req, res) => {
     console.log("Creating Business")
-    //Get largets BusId
-    const querey1 = "SELECT max(BusId) as maxID FROM Business" 
-    dataCon.query(querey1, (error, result) => {
-        if(!error) {
-            console.log("Max Bus Id: " + result[0].maxID)
-        }
+    getMaxBusID(maxID => {
+        console.log(maxID)
     })
+    //console.log(currMaxBusId)
     //res.send(req.body.BusinessName + " Created!")
 })
 
 app.listen(port, () => {
     console.log('Express app listening on http://localhost:', port)
 })
+
+
+//Query functions
+async function getMaxBusID(callback) {
+    //Get largets BusId
+    const querey = await dataCon.query('SELECT max(BusId) as maxID FROM Business')
+    const resutl = await querey.on('result', row => {
+        callback(row.maxID)
+    })
+    
+}
