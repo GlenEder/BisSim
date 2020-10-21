@@ -41,19 +41,17 @@ app.get('/createBusiness', (req, res) => {
 //test post 
 app.post('/apiGetBusinesses', (req, res) => {
     console.log("Querying database for BUSINESSES")
-    dataCon.connect(err => {
-        if(err) throw err
-        const querey = "select BusName from Business"
-        dataCon.query(querey, (error, result) => {
-            let status = error ? 'error' : 'success'
-            res.json({
-                status: status,
-                data: result
-            })    
-            
-            //log error if occured in server console
-            if(error) console.log(error)
-        })
+
+    const querey = "select BusName from Business"
+    dataCon.query(querey, (error, result) => {
+        let status = error ? 'error' : 'success'
+        res.json({
+            status: status,
+            data: result
+        })    
+        
+        //log error if occured in server console
+        if(error) console.log(error)
     })
 })
 
@@ -62,6 +60,7 @@ app.post('/apiGetBusinesses', (req, res) => {
 app.post('/createBusiness', (req, res) => {
     console.log("Creating Business")
     console.log(req.body)
+    res.send(req.body.BusinessName + " Created!")
 })
 
 app.listen(port, () => {
