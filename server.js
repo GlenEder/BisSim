@@ -14,8 +14,18 @@ const dataCon = mysql.createConnection({
 //attempt connection to database 
 dataCon.connect(err => {
     if(err) throw err
-
     console.log("Connected to database")
+
+    dataCon.query({
+        sql: "SELECT * FROM `Business`",
+        timeout: 10000, //timeout at 10sec
+        },
+        function (error, results, fields) {
+            if(error) throw error
+            console.log(results)
+        }
+    )
+
 })
 
 //use pulblic folder to send files from 
