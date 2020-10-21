@@ -5,10 +5,10 @@ const port = 3000
 //init database 
 const mysql = require('mysql')
 const dataCon = mysql.createConnection({
-    host: '34.123.177.22',
+    host: '35.184.255.168',
     user: 'root', 
-    password: 'CS348_pass',
-    database: 'cs348project'
+    password: 'testpass',
+    database: 'test'
 })
 
 //attempt connection to database 
