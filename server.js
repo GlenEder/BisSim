@@ -74,9 +74,9 @@ app.listen(port, () => {
 //Query functions
 async function getMaxBusID(callback) {
     //Get largets BusId
-    const querey = await dataCon.query('SELECT max(BusId) as maxID FROM Business')
-    const resutl = await querey.on('result', row => {
-        callback(row.maxID)
+    dataCon.query('SELECT max(BusId) as maxID FROM Business', (error, result) => {
+        error ? callback(null) : callback(result[0].maxID)
     })
+   
     
 }
