@@ -25,7 +25,19 @@ app.get('/', (req, res) => {
 
 //test post 
 app.post('/apiGetBusinesses', (req, res) => {
-    console.log(req.body)
+    console.log("Querying database for BUSINESSES")
+    dataCon.connect(err => {
+        if(err) throw err
+        const querey = "select BusName from Business"
+        dataCon.query(querey, (error, result) => {
+            let status = error ? 'error' : 'success'
+            res.json({
+                status: status,
+                data: result
+            })            
+            if(!error) console.log(result)
+        })
+    })
 })
 
 app.listen(port, () => {
