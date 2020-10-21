@@ -1,6 +1,9 @@
 const express = require('express')
 const app = express()
 const port = 3000
+const bodyParser = require('body-parser')
+const multer = require('multer')
+const upload = multer()
 
 //init database 
 const mysql = require('mysql')
@@ -11,6 +14,12 @@ const dataCon = mysql.createConnection({
     database: 'test'
 })
 
+//for parsing data 
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({extended: true}))
+
+//for parsing form data
+app.use(upload.array())
 
 //use pulblic folder to send files from 
 app.use(express.static('public'))
