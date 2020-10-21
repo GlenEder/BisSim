@@ -48,6 +48,13 @@ app.post('/apiGetBusinesses', (req, res) => {
     })
 })
 
+
+//create business post
+app.post('/createBusiness', (req, res) => {
+    console.log("Creating Business")
+    console.log(req.body)
+})
+
 app.listen(port, () => {
     console.log('Express app listening on http://localhost:', port)
 })
