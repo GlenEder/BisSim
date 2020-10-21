@@ -1,5 +1,6 @@
 
 
+
 async function getBusinesses () {
     const options = {
         method: 'POST'

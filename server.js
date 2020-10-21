@@ -20,7 +20,13 @@ app.use(express.json({limit: '1mb'}))
 
 //send landing page to user
 app.get('/', (req, res) => {
-    res.sendFile('index.html')
+    res.sendFile('index.html', {root: __dirname + '/public'})
+})
+
+//send create business page
+app.get('/createBusiness', (req, res) => {
+    console.log("Sending create busines page")
+    res.sendFile('createBusiness.html', {root: __dirname + '/public'})  
 })
 
 //test post 
@@ -34,8 +40,10 @@ app.post('/apiGetBusinesses', (req, res) => {
             res.json({
                 status: status,
                 data: result
-            })            
-            if(!error) console.log(result)
+            })    
+            
+            //log error if occured in server console
+            if(error) console.log(error)
         })
     })
 })
