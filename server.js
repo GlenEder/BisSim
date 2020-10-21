@@ -59,8 +59,14 @@ app.post('/apiGetBusinesses', (req, res) => {
 //create business post
 app.post('/createBusiness', (req, res) => {
     console.log("Creating Business")
-    console.log(req.body)
-    res.send(req.body.BusinessName + " Created!")
+    //Get largets BusId
+    const querey1 = "SELECT max(BusId) as maxID FROM Business" 
+    dataCon.query(querey1, (error, result) => {
+        if(!error) {
+            console.log("Max Bus Id: " + result[0].maxID)
+        }
+    })
+    //res.send(req.body.BusinessName + " Created!")
 })
 
 app.listen(port, () => {
