@@ -70,13 +70,13 @@ app.listen(port, () => {
     console.log('Express app listening on http://localhost:', port)
 })
 
+/*===================
+===Query functions===
+====================*/
 
-//Query functions
-async function getMaxBusID(callback) {
-    //Get largets BusId
+//Sets param for callback to current max business id (null if errored)
+function getMaxBusID(callback) {
     dataCon.query('SELECT max(BusId) as maxID FROM Business', (error, result) => {
         error ? callback(null) : callback(result[0].maxID)
-    })
-   
-    
+    })    
 }
