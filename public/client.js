@@ -138,7 +138,7 @@ async function getBusinesses () {
         employeeButton.style = "background-color: green"
         employeeButton.addEventListener('click', () => {
             getBusinessEmployees(element.BusId, result => {
-                console.log(result)
+                //console.log(result)
 
                 //create employee list
                 listEmployees(result)
@@ -199,7 +199,7 @@ function listEmployees(data) {
     }
 
     for(var index in data) {
-        console.log(data[index])
+        //console.log(data[index])
         //create entry row
         let row = table.insertRow()
 
