@@ -11,11 +11,19 @@ async function getBusinesses () {
 
     //create html table for businesses
     let table = document.createElement('table')
+
+
+    //Fill table with data
     jsonData.data.forEach(element => {
+        console.log(element)
         let row = table.insertRow()
-        let cell = row.insertCell()
-        let busName = document.createTextNode(element.BusName)
-        cell.appendChild(busName)
+
+        for(var item in element) {
+            let cell = row.insertCell()
+            let text = document.createTextNode(element[item])
+            cell.appendChild(text)
+        }
+       
         
         //create delete button cell 
         let deleteCell = row.insertCell()

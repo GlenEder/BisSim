@@ -42,7 +42,7 @@ app.get('/createBusiness', (req, res) => {
 app.post('/apiGetBusinesses', (req, res) => {
     console.log("Querying database for BUSINESSES")
 
-    const querey = "select BusName from Business"
+    const querey = "select * from Business"
     dataCon.query(querey, (error, result) => {
         let status = error ? 'error' : 'success'
         res.json({
