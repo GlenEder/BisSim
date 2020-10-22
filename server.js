@@ -38,6 +38,12 @@ app.get('/createBusiness', (req, res) => {
     res.sendFile('createBusiness.html', {root: __dirname + '/public'})  
 })
 
+//send create owner page
+app.get('/createOwner', (req, res) => {
+    console.log("Sending create owner page")
+    res.sendFile('createOwner.html', {root: __dirname + '/public'})  
+})
+
 //returns business table from database
 app.post('/apiGetBusinesses', (req, res) => {
     console.log("Querying database for BUSINESSES")
