@@ -157,7 +157,7 @@ async function getBusinesses () {
         deleteButton.addEventListener('click', () => {
             deleteBusiness(element.OwnerId, element.BusId, result => {
                 alert(result)
-                location.href = '/'
+                getBusinesses()
             })
             
         })
