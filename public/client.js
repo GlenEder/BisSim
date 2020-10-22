@@ -25,6 +25,15 @@ async function login() {
 
         //query server to validate params
         console.log("Logging in with CREDS: " + empID, ", ", busID)
+        let body = JSON.stringify({
+            "empID": empID,
+            "busID": busID
+        })
+
+        let result = await fetch('/loginUser', {method: 'post', headers: {'Content-Type': 'application/json'}, body})
+        let dataReceived = await result.json()
+
+        console.log(dataReceived)
 
     }
     else {
