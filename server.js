@@ -47,6 +47,14 @@ app.get('/createOwner', (req, res) => {
     res.sendFile('createOwner.html', {root: __dirname + '/public'})  
 })
 
+//returns employees in selected business 
+app.post('/getBusinessEmployees', (req, res) => {
+    const data = req.body
+    getBusinessEmployees(data.busID, result => {
+        res.send(result)
+    })
+})
+
 //returns business table from database
 app.post('/apiGetBusinesses', (req, res) => {
     console.log("Querying database for BUSINESSES")
@@ -212,5 +220,13 @@ function insertNewEmployee(values, callback) {
     dataCon.query("INSERT INTO Employee (EmpId, BusId, Name, BirthYear, position, Salary) VALUES (?, ?, ?, ?, ?, ?)", values, (error, result) => {
         if(error) console.log(error)
         error ? callback("ERROR") : callback("SUCCESS")
+    })
+}
+
+//Retreives employees from provided business in database
+function getBusinessEmployees(business, callback) { 
+    dataCon.query("SELECT * FROM Employee WHERE BusId = ?", business, (error, result) => {
+        if(error) console.log(error)
+        error ? callback("ERROR") : callback(result)
     })
 }

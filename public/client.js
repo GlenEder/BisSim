@@ -137,7 +137,9 @@ async function getBusinesses () {
         employeeButton.value = "Display employees"
         employeeButton.style = "background-color: green"
         employeeButton.addEventListener('click', () => {
-            alert("Employees")
+            getBusinessEmployees(element.BusId, result => {
+                console.log(result)
+            })
         })
 
         //add to cell
@@ -202,4 +204,15 @@ async function deleteBusiness(ownerID, businessID, callback) {
 
     //Return result message
     dataReceived.requestStatus == "ERROR" ? callback("ERROR: Could not delete business") : callback("SUCCESS: Business deleted")
+}
+
+//calls sever to get employees of selected business
+async function getBusinessEmployees(businessID, callback) {
+    let body = JSON.stringify({
+        "busID": businessID
+    })
+    let result = await fetch('/getBusinessEmployees', {method: 'post', headers: {'Content-Type': 'application/json'}, body})
+    let dataReceived = await result.json()
+
+    callback(dataReceived)
 }
