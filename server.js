@@ -73,7 +73,7 @@ app.post('/createBusiness', async (req, res) => {
 
         dataCon.query("INSERT INTO Business (OwnerId, BusId, BusName, Founded, City, State, Address) VALUES (?, ?, ?, ?, ?, ?, ?)", values, (error, result) => {
             if(error) throw error
-            console.log(result)
+            res.sendFile('index.html', {root: __dirname + '/public'})  
         })
 
 
