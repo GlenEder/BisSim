@@ -79,6 +79,17 @@ app.post('/createBusiness', async (req, res) => {
     })
 })
 
+//Removes provided business from database
+app.post('/removeBusiness', (req, res) => {
+    let data = req.body
+    console.log("Removing: ", data)
+    const values = [Number(data.owner), Number(data.business)]
+    deleteBusiness(values, result => {
+        res.send({requestStatus: result})
+    })
+
+})
+
 app.listen(port, () => {
     console.log('Express app listening on http://localhost:', port)
 })
@@ -98,6 +109,14 @@ function getMaxBusID(callback) {
 //puts success or error in callback based on database response
 function insertNewBusiness(values, callback) {
     dataCon.query("INSERT INTO Business (OwnerId, BusId, BusName, Founded, City, State, Address) VALUES (?, ?, ?, ?, ?, ?, ?)", values, (error, result) => {
+        error ? callback("ERROR") : callback("SUCCESS")
+    })
+}
+
+//Deletes provided buiness from database 
+//puts success or error in callback based on database response
+function deleteBusiness(values, callback) {
+    dataCon.query("DELETE FROM Business WHERE OwnerId = ? AND BusId = ?", values, (error, result) => {
         error ? callback("ERROR") : callback("SUCCESS")
     })
 }

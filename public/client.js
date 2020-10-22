@@ -45,7 +45,11 @@ async function getBusinesses () {
         deleteButton.type = "button"
         deleteButton.value = "Delete Business"
         deleteButton.addEventListener('click', () => {
-          alert("Deleting " + element.BusName)
+            deleteBusiness(element.OwnerId, element.BusId, result => {
+                alert(result)
+                location.href = '/'
+            })
+            
         })
 
         //appened to cell
@@ -64,4 +68,19 @@ async function getBusinesses () {
 
 
 
+}
+
+//calls server to delete provided business from database
+async function deleteBusiness(ownerID, businessID, callback) {
+    console.log(ownerID + ", " + businessID)
+    let body = JSON.stringify({
+        "owner": ownerID,
+        "business": businessID
+    })
+    console.log(body)
+    let result = await fetch('/removeBusiness', {method: 'post', headers: {'Content-Type': 'application/json'}, body})
+    let dataReceived = await result.json()
+
+    //Return result message
+    dataReceived.requestStatus == "ERROR" ? callback("ERROR: Could not delete business") : callback("SUCCESS: Business deleted")
 }
