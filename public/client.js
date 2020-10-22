@@ -127,6 +127,21 @@ async function getBusinesses () {
             let text = document.createTextNode(element[item])
             cell.appendChild(text)
         }
+
+        //create list employees button
+        let employeeCell = row.insertCell()
+
+        //create button
+        let employeeButton = document.createElement('input')
+        employeeButton.type = "button"
+        employeeButton.value = "Display employees"
+        employeeButton.style = "background-color: green"
+        employeeButton.addEventListener('click', () => {
+            alert("Employees")
+        })
+
+        //add to cell
+        employeeCell.appendChild(employeeButton)
        
     
         //create delete button cell 
@@ -136,6 +151,7 @@ async function getBusinesses () {
         let deleteButton = document.createElement('input')
         deleteButton.type = "button"
         deleteButton.value = "Delete Business"
+        deleteButton.style = "background-color: red"
         deleteButton.addEventListener('click', () => {
             deleteBusiness(element.OwnerId, element.BusId, result => {
                 alert(result)
