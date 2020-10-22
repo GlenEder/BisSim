@@ -1,5 +1,67 @@
 
+let loggedIn = false    //current user logged in
+let empId = null        //employee id of logged in user
 
+
+//set onload for document
+window.addEventListener('load', showLoggedIn)
+
+//Sets header text to display if user is logged in 
+function showLoggedIn() {
+    let info = document.getElementById("loginHUD")
+    if(loggedIn) {
+        info.innerHTML = "Logged in as Employee: " + empId
+    }
+    else {
+        info.innerHTML = "User Not Logged In"
+    }
+}
+
+//logs in user based on creds
+async function login() {
+
+    //logout if user is already logged in
+    if(loggedIn) {
+        loggedIn = false
+        empId = null
+        alert("User Logged Out")
+        showLoggedIn()
+        return
+    }
+
+    if(verifyLoginParams()) {
+        let empID = document.getElementById("loginEmpID").value
+        let busID = document.getElementById("loginBusID").value
+
+        //query server to validate params
+        let body = JSON.stringify({
+            "empID": empID,
+            "busID": busID
+        })
+
+        let result = await fetch('/loginUser', {method: 'post', headers: {'Content-Type': 'application/json'}, body})
+        let dataReceived = await result.json()
+
+        //login user
+        if(dataReceived.result) {
+            loggedIn = true
+            empId = empID
+            showLoggedIn()
+        }
+        else {
+            alert("ERROR: Employee Does Not Exist")
+        }
+    }
+    else {
+        alert("ERROR: Enter Name and Employee ID")
+    }
+}
+
+function verifyLoginParams() {
+    let empID = document.getElementById("loginEmpID").value
+    let busID = document.getElementById("loginBusID").value
+    return empID && busID
+}
 
 async function getBusinesses () {
     //Get business list from server

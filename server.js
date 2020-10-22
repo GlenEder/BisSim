@@ -38,7 +38,7 @@ app.get('/createBusiness', (req, res) => {
     res.sendFile('createBusiness.html', {root: __dirname + '/public'})  
 })
 
-//test post 
+//returns business table from database
 app.post('/apiGetBusinesses', (req, res) => {
     console.log("Querying database for BUSINESSES")
 
@@ -55,6 +55,23 @@ app.post('/apiGetBusinesses', (req, res) => {
     })
 })
 
+// 'login' user
+app.post('/loginUser', (req, res) => {
+    let creds = req.body
+    console.log(creds)
+    const values = [
+        Number(creds.empID),
+        Number(creds.busID)
+    ]
+
+    //querey for employee
+    employeeExists(values, result => {
+        let exist = result ? true : false
+        res.send({result: exist})
+    })
+
+    
+})
 
 //create business post
 app.post('/createBusiness', async (req, res) => {
@@ -118,5 +135,22 @@ function insertNewBusiness(values, callback) {
 function deleteBusiness(values, callback) {
     dataCon.query("DELETE FROM Business WHERE OwnerId = ? AND BusId = ?", values, (error, result) => {
         error ? callback("ERROR") : callback("SUCCESS")
+    })
+}
+
+//checks if employee exists based on values provided
+//puts success or error in callback based on database response
+function employeeExists (values, callback) {
+    dataCon.query("SELECT * FROM Employee WHERE EmpId = ? AND BusId = ?", values, (error, result) => {
+        if(error) console.log(error)
+        callback(result.length)
+    })
+}
+
+//quereys employee table 
+function getEmployees(callback) {
+    dataCon.query("SELECT * FROM Employee", (error, result) => {
+        if(error) console.log(error)
+        console.log("Query result: ", result)
     })
 }
