@@ -61,16 +61,21 @@ app.post('/createBusiness', async (req, res) => {
     getMaxBusID(maxID => {
         const newBusinessId = maxID + 1
         const tempOwner = 2
-        const query = "INSERT INTO Business (OwnerId, BusId, BusName, Founded, City, State, Address) VALUES (" +
-                        tempOwner + "," +
-                        newBusinessId + "," +
-                        req.body.BusinessName.trim() + "," +
-                        req.body.YearFounded.trim()  + "," +
-                        req.body.City.trim()  + "," +
-                        req.body.State.trim()  + "," +
-                        req.body.Address.trim()  + ")"
-        console.log(query)
-        
+        let data = req.body
+        let values = [  tempOwner, 
+                        newBusinessId, 
+                        data.BusinessName.trim(), 
+                        Number(data.YearFounded.trim()), 
+                        data.City.trim(),
+                        data.State.trim(),
+                        data.Address.trim()
+                    ]
+
+        dataCon.query("INSERT INTO Business (OwnerId, BusId, BusName, Founded, City, State, Address) VALUES (?, ?, ?, ?, ?, ?, ?)", values, (error, result) => {
+            if(error) throw error
+            console.log(result)
+        })
+
 
     })
     //console.log(currMaxBusId)
