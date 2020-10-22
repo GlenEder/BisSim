@@ -5,6 +5,9 @@ const bodyParser = require('body-parser')
 const multer = require('multer')
 const upload = multer()
 
+//Game values
+const startingSalary = 5
+
 //init database 
 const mysql = require('mysql')
 const dataCon = mysql.createConnection({
@@ -58,6 +61,47 @@ app.post('/apiGetBusinesses', (req, res) => {
         
         //log error if occured in server console
         if(error) console.log(error)
+    })
+})
+
+//creates user and new business
+app.post('/createOwnerAndBusiness', (req, res) => {
+    let data = req.body
+    console.log(data)
+
+    //create business first to get business id for employee creation
+    getMaxBusID(maxID => {
+        const newBusinessId = maxID + 1
+        const values = [
+            Number(data.EmpID),
+            newBusinessId,
+            data.BusinessName.trim(),
+            Number(data.YearFounded),
+            data.City.trim(),
+            data.State.trim(),
+            data.Address.trim()
+        ]
+        console.log("Business values: ", values)
+        insertNewBusiness(values, result => {
+            if(result == "ERROR") {
+                res.send({result: "ERROR: Business Could Not Be Created"})
+            }
+            else {
+                //Create user 
+                const userValues = [
+                    Number(data.EmpID),
+                    newBusinessId,
+                    data.EmpName.trim(),
+                    Number(data.EmpYear),
+                    data.EmpPos.trim(),
+                    startingSalary
+                ]
+                console.log("User values: ", userValues)
+                insertNewEmployee(userValues, innerRes => {
+                    res.send({result: innerRes})
+                })
+            }
+        })
     })
 })
 
@@ -132,6 +176,7 @@ function getMaxBusID(callback) {
 //puts success or error in callback based on database response
 function insertNewBusiness(values, callback) {
     dataCon.query("INSERT INTO Business (OwnerId, BusId, BusName, Founded, City, State, Address) VALUES (?, ?, ?, ?, ?, ?, ?)", values, (error, result) => {
+        console.log(error)
         error ? callback("ERROR") : callback("SUCCESS")
     })
 }
@@ -158,5 +203,14 @@ function getEmployees(callback) {
     dataCon.query("SELECT * FROM Employee", (error, result) => {
         if(error) console.log(error)
         console.log("Query result: ", result)
+    })
+}
+
+//inserts new employee into database
+//puts success or error in callback based on database response
+function insertNewEmployee(values, callback) {
+    dataCon.query("INSERT INTO Employee (EmpId, BusId, Name, BirthYear, position, Salary) VALUES (?, ?, ?, ?, ?, ?)", values, (error, result) => {
+        if(error) console.log(error)
+        error ? callback("ERROR") : callback("SUCCESS")
     })
 }
