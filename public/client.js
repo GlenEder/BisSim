@@ -9,6 +9,8 @@ window.addEventListener('load', showLoggedIn)
 //Sets header text to display if user is logged in 
 function showLoggedIn() {
     let info = document.getElementById("loginHUD")
+    if(info == null) return     //Error checking as using this file for other pages
+
     if(loggedIn) {
         info.innerHTML = "Logged in as Employee: " + empId
     }
@@ -57,10 +59,38 @@ async function login() {
     }
 }
 
+//null check for login fields
 function verifyLoginParams() {
     let empID = document.getElementById("loginEmpID").value
     let busID = document.getElementById("loginBusID").value
     return empID && busID
+}
+
+//create Owner and first business and alert user of creds when done
+async function createOwnerShit() {
+    const body = JSON.stringify({
+        "EmpID": document.getElementById("EmpID").value,
+        "EmpName": document.getElementById("EmpName").value,
+        "EmpYear": document.getElementById("EmpYear").value,
+        "EmpPos": document.getElementById("EmpPos").value,
+        "BusinessName": document.getElementById("BusinessName").value,
+        "YearFounded": document.getElementById("YearFounded").value,
+        "Address": document.getElementById("Address").value,
+        "City": document.getElementById("City").value,
+        "State": document.getElementById("State").value
+    })
+
+    let result = await fetch('/createOwnerAndBusiness', {method: 'post', headers: {'Content-Type': 'application/json'}, body})
+    let dataReceived = await result.json()
+
+    console.log(dataReceived)
+    if(dataReceived.result == "SUCCESS") {
+        alert("Creation Successful: Login Creds Below\nEmployee Id: " + dataReceived.emp + "\nBusiness Id: " + dataReceived.bus)
+    }
+    else {
+        alert(dataReceived.result)
+    }
+
 }
 
 async function getBusinesses () {
@@ -134,6 +164,17 @@ async function getBusinesses () {
 
 //calls server to delete provided business from database
 async function deleteBusiness(ownerID, businessID, callback) {
+
+    if(!loggedIn) {
+        callback("ERROR: Login to delete business")
+        return
+    }
+
+    if(ownerID != empId) {
+        callback("ERROR: Cannot delete business you do not own")
+        return
+    }
+
     console.log(ownerID + ", " + businessID)
     let body = JSON.stringify({
         "owner": ownerID,
