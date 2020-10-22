@@ -127,6 +127,26 @@ async function getBusinesses () {
             let text = document.createTextNode(element[item])
             cell.appendChild(text)
         }
+
+        //create list employees button
+        let employeeCell = row.insertCell()
+
+        //create button
+        let employeeButton = document.createElement('input')
+        employeeButton.type = "button"
+        employeeButton.value = "Display employees"
+        employeeButton.style = "background-color: green"
+        employeeButton.addEventListener('click', () => {
+            getBusinessEmployees(element.BusId, result => {
+                //console.log(result)
+
+                //create employee list
+                listEmployees(result)
+            })
+        })
+
+        //add to cell
+        employeeCell.appendChild(employeeButton)
        
     
         //create delete button cell 
@@ -136,10 +156,11 @@ async function getBusinesses () {
         let deleteButton = document.createElement('input')
         deleteButton.type = "button"
         deleteButton.value = "Delete Business"
+        deleteButton.style = "background-color: red"
         deleteButton.addEventListener('click', () => {
             deleteBusiness(element.OwnerId, element.BusId, result => {
                 alert(result)
-                location.href = '/'
+                getBusinesses()
             })
             
         })
@@ -160,6 +181,44 @@ async function getBusinesses () {
 
 
 
+}
+
+//creats list of employees with given employee array 
+function listEmployees(data) {
+
+    let table = document.createElement('table')
+    //create table headers
+    let theader = table.createTHead()
+    let headRow = theader.insertRow()
+    let headers = ['EmployeeId', 'BusinessId', 'Name', 'Birth Date', 'Position', 'Salary']
+    for(var idex in headers) {
+        let th = document.createElement('th')
+        let text = document.createTextNode(headers[idex])
+        th.appendChild(text)
+        headRow.appendChild(th)
+    }
+
+    for(var index in data) {
+        //console.log(data[index])
+        //create entry row
+        let row = table.insertRow()
+
+        //fill row with data
+        for(var item in data[index]) {
+            let cell = row.insertCell()
+            let text = document.createTextNode(data[index][item])
+            cell.appendChild(text)
+        }
+    }
+
+    //Add/Replace on document
+    let empDiv = document.getElementById("employeeTable")
+    if(empDiv.childElementCount) {
+        empDiv.replaceChild(table, empDiv.lastChild)
+    }
+    else {
+        empDiv.appendChild(table)
+    }
 }
 
 //calls server to delete provided business from database
@@ -186,4 +245,15 @@ async function deleteBusiness(ownerID, businessID, callback) {
 
     //Return result message
     dataReceived.requestStatus == "ERROR" ? callback("ERROR: Could not delete business") : callback("SUCCESS: Business deleted")
+}
+
+//calls sever to get employees of selected business
+async function getBusinessEmployees(businessID, callback) {
+    let body = JSON.stringify({
+        "busID": businessID
+    })
+    let result = await fetch('/getBusinessEmployees', {method: 'post', headers: {'Content-Type': 'application/json'}, body})
+    let dataReceived = await result.json()
+
+    callback(dataReceived)
 }
