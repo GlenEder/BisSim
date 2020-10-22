@@ -98,7 +98,7 @@ app.post('/createOwnerAndBusiness', (req, res) => {
                 ]
                 console.log("User values: ", userValues)
                 insertNewEmployee(userValues, innerRes => {
-                    res.send({result: innerRes})
+                    res.send({result: innerRes, emp: Number(data.EmpID), bus: newBusinessId})
                 })
             }
         })

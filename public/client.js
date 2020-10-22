@@ -83,7 +83,14 @@ async function createOwnerShit() {
     let result = await fetch('/createOwnerAndBusiness', {method: 'post', headers: {'Content-Type': 'application/json'}, body})
     let dataReceived = await result.json()
 
-    
+    console.log(dataReceived)
+    if(dataReceived.result == "SUCCESS") {
+        alert("Creation Successful: Login Creds Below\nEmployee Id: " + dataReceived.emp + "\nBusiness Id: " + dataReceived.bus)
+    }
+    else {
+        alert(dataReceived.result)
+    }
+
 }
 
 async function getBusinesses () {
