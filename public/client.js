@@ -1,4 +1,6 @@
 
+let loggedIn = false    //current user logged in
+let empId = null        //employee id of logged in user
 
 
 async function getBusinesses () {
