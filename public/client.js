@@ -170,6 +170,11 @@ async function deleteBusiness(ownerID, businessID, callback) {
         return
     }
 
+    if(ownerID != empId) {
+        callback("ERROR: Cannot delete business you do not own")
+        return
+    }
+
     console.log(ownerID + ", " + businessID)
     let body = JSON.stringify({
         "owner": ownerID,
