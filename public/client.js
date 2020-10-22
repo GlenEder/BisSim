@@ -3,6 +3,21 @@ let loggedIn = false    //current user logged in
 let empId = null        //employee id of logged in user
 
 
+//set onload for document
+window.addEventListener('load', showLoggedIn)
+
+//Sets header text to display if user is logged in 
+function showLoggedIn() {
+    let info = document.getElementById("loginHUD")
+    if(loggedIn) {
+        info.innerHTML = "Logged in as Employee: " + empId
+    }
+    else {
+        info.innerHTML = "User Not Logged In"
+    }
+}
+
+
 async function getBusinesses () {
     //Get business list from server
     const options = {
