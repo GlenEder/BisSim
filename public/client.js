@@ -9,6 +9,8 @@ window.addEventListener('load', showLoggedIn)
 //Sets header text to display if user is logged in 
 function showLoggedIn() {
     let info = document.getElementById("loginHUD")
+    if(info == null) return     //Error checking as using this file for other pages
+
     if(loggedIn) {
         info.innerHTML = "Logged in as Employee: " + empId
     }
