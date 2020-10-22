@@ -58,9 +58,20 @@ app.post('/apiGetBusinesses', (req, res) => {
 
 //create business post
 app.post('/createBusiness', async (req, res) => {
-    console.log("Creating Business")
     getMaxBusID(maxID => {
-        console.log(maxID)
+        const newBusinessId = maxID + 1
+        const tempOwner = 2
+        const query = "INSERT INTO Business (OwnerId, BusId, BusName, Founded, City, State, Address) VALUES (" +
+                        tempOwner + "," +
+                        newBusinessId + "," +
+                        req.body.BusinessName.trim() + "," +
+                        req.body.YearFounded.trim()  + "," +
+                        req.body.City.trim()  + "," +
+                        req.body.State.trim()  + "," +
+                        req.body.Address.trim()  + ")"
+        console.log(query)
+        
+
     })
     //console.log(currMaxBusId)
     //res.send(req.body.BusinessName + " Created!")
