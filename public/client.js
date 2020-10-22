@@ -12,13 +12,25 @@ async function getBusinesses () {
     //create html table for businesses
     let table = document.createElement('table')
     jsonData.data.forEach(element => {
-        let row = document.createElement('tr')
-        let cell = document.createElement('td')
-        let text = document.createTextNode(element.BusName)
-        cell.appendChild(text)
-        row.appendChild(cell)
+        let row = table.insertRow()
+        let cell = row.insertCell()
+        let busName = document.createTextNode(element.BusName)
+        cell.appendChild(busName)
+        
+        //create delete button cell 
+        let deleteCell = row.insertCell()
+     
+        
+        //create the button
+        let deleteButton = document.createElement('input')
+        deleteButton.type = "button"
+        deleteButton.value = "Delete Business"
+        deleteButton.addEventListener('click', () => {
+          alert("Deleting " + element.BusName)
+        })
 
-        table.appendChild(row)
+        //appened to cell
+        deleteCell.appendChild(deleteButton)
     })
 
 
