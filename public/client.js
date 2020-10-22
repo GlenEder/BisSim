@@ -164,6 +164,12 @@ async function getBusinesses () {
 
 //calls server to delete provided business from database
 async function deleteBusiness(ownerID, businessID, callback) {
+
+    if(!loggedIn) {
+        callback("ERROR: Login to delete business")
+        return
+    }
+
     console.log(ownerID + ", " + businessID)
     let body = JSON.stringify({
         "owner": ownerID,
