@@ -19,6 +19,16 @@ function showLoggedIn() {
 
 //logs in user based on creds
 async function login() {
+
+    //logout if user is already logged in
+    if(loggedIn) {
+        loggedIn = false
+        empId = null
+        alert("User Logged Out")
+        showLoggedIn()
+        return
+    }
+
     if(verifyLoginParams()) {
         let empID = document.getElementById("loginEmpID").value
         let busID = document.getElementById("loginBusID").value
