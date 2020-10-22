@@ -6,42 +6,42 @@
     </head>
     <body>
         <h1>Create User & Your First Business</h1>
-        <form method="post" action="createOwnerAndBusiness">
+        <form>
             <fieldset>
                 <legend>User Creation</legend>
                 <label for="Employee Id">Employee ID:</label><br/>
-                <input type="number" name="EmpID" placeholder="Ex. 420" required="true" /><br/>
+                <input type="number" id="EmpID" placeholder="Ex. 420" required="true" /><br/>
 
                 <label>Name:</label><br/>
-                <input type="text" name="EmpName" placeholder="Ex. Justin Time" required="true" /><br/>
+                <input type="text" id="EmpName" placeholder="Ex. Justin Time" required="true" /><br/>
 
                 <label>Birth Year:</label><br/>
-                <input type="number" name="EmpYear" placeholder="Ex. 1997" required="true" /><br/>
+                <input type="number" id="EmpYear" placeholder="Ex. 1997" required="true" /><br/>
 
                 <label>Position:</label><br/>
-                <input type="text" name="EmpPos" placeholder="Ex. CEO" required="true" /><br/>
+                <input type="text" id="EmpPos" placeholder="Ex. CEO" required="true" /><br/>
 
             </fieldset>
             <fieldset>
                 <legend>Business Creation</legend>
                 <label for="BusinessName">Business Name: </label><br/>
-                <input type="text" name="BusinessName" placeholder="Ex. Eggshell Airlines" required="true" /><br/>
+                <input type="text" id="BusinessName" placeholder="Ex. Eggshell Airlines" required="true" /><br/>
 
                 <label for="YearFounded">Year Founded: </label><br/>
-                <input type="number" name="YearFounded" placeholder="Ex. 1997" required="true" /><br/>
+                <input type="number" id="YearFounded" placeholder="Ex. 1997" required="true" /><br/>
 
                 <label for="Address">Address: </label><br/>
-                <input type="text" name="Address" placeholder="Ex. 712 Third St." required="true" /><br/>
+                <input type="text" id="Address" placeholder="Ex. 712 Third St." required="true" /><br/>
 
                 <label for="City">City: </label><br/>
-                <input type="text" name="City" placeholder="Ex. West Lafayette" required="true" /><br/>
+                <input type="text" id="City" placeholder="Ex. West Lafayette" required="true" /><br/>
 
                 <label for="State">State: </label><br/>
-                <input type="text" name="State" placeholder="Ex. Indiana" required="true" /><br/>
+                <input type="text" id="State" placeholder="Ex. Indiana" required="true" /><br/>
 
             </fieldset>
 
-            <br/><input type="submit" value="Create User and Business" />
+            <br/><input type="button" value="Create User and Business" onclick="createOwnerShit()"/>
 
         </form>
     </body>

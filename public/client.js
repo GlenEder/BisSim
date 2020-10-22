@@ -59,10 +59,31 @@ async function login() {
     }
 }
 
+//null check for login fields
 function verifyLoginParams() {
     let empID = document.getElementById("loginEmpID").value
     let busID = document.getElementById("loginBusID").value
     return empID && busID
+}
+
+//create Owner and first business and alert user of creds when done
+async function createOwnerShit() {
+    const body = JSON.stringify({
+        "EmpID": document.getElementById("EmpID").value,
+        "EmpName": document.getElementById("EmpName").value,
+        "EmpYear": document.getElementById("EmpYear").value,
+        "EmpPos": document.getElementById("EmpPos").value,
+        "BusinessName": document.getElementById("BusinessName").value,
+        "YearFounded": document.getElementById("YearFounded").value,
+        "Address": document.getElementById("Address").value,
+        "City": document.getElementById("City").value,
+        "State": document.getElementById("State").value
+    })
+
+    let result = await fetch('/createOwnerAndBusiness', {method: 'post', headers: {'Content-Type': 'application/json'}, body})
+    let dataReceived = await result.json()
+
+    
 }
 
 async function getBusinesses () {
