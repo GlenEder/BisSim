@@ -25,19 +25,20 @@ async function getBusinesses () {
 
     //Fill table with data
     jsonData.data.forEach(element => {
-        console.log(element)
+        
+        //create entry row
         let row = table.insertRow()
 
+        //fill row with data
         for(var item in element) {
             let cell = row.insertCell()
             let text = document.createTextNode(element[item])
             cell.appendChild(text)
         }
        
-        
+    
         //create delete button cell 
         let deleteCell = row.insertCell()
-     
         
         //create the button
         let deleteButton = document.createElement('input')
