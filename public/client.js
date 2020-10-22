@@ -17,6 +17,26 @@ function showLoggedIn() {
     }
 }
 
+//logs in user based on creds
+async function login() {
+    if(verifyLoginParams()) {
+        let empID = document.getElementById("loginEmpID").value
+        let busID = document.getElementById("loginBusID").value
+
+        //query server to validate params
+        console.log("Logging in with CREDS: " + empID, ", ", busID)
+
+    }
+    else {
+        alert("ERROR: Enter Name and Employee ID")
+    }
+}
+
+function verifyLoginParams() {
+    let empID = document.getElementById("loginEmpID").value
+    let busID = document.getElementById("loginBusID").value
+    return empID && busID
+}
 
 async function getBusinesses () {
     //Get business list from server
