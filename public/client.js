@@ -12,6 +12,16 @@ async function getBusinesses () {
     //create html table for businesses
     let table = document.createElement('table')
 
+    //create table headers
+    let theader = table.createTHead()
+    let headRow = theader.insertRow()
+    let headers = ['OwnerId', 'BusinessId', 'Business Name', 'Year Founded', 'City', 'State', 'Address']
+    for(var idex in headers) {
+        let th = document.createElement('th')
+        let text = document.createTextNode(headers[idex])
+        th.appendChild(text)
+        headRow.appendChild(th)
+    }
 
     //Fill table with data
     jsonData.data.forEach(element => {
