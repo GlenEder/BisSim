@@ -139,6 +139,9 @@ async function getBusinesses () {
         employeeButton.addEventListener('click', () => {
             getBusinessEmployees(element.BusId, result => {
                 console.log(result)
+
+                //create employee list
+                listEmployees(result)
             })
         })
 
@@ -178,6 +181,44 @@ async function getBusinesses () {
 
 
 
+}
+
+//creats list of employees with given employee array 
+function listEmployees(data) {
+
+    let table = document.createElement('table')
+    //create table headers
+    let theader = table.createTHead()
+    let headRow = theader.insertRow()
+    let headers = ['EmployeeId', 'BusinessId', 'Name', 'Birth Date', 'Position', 'Salary']
+    for(var idex in headers) {
+        let th = document.createElement('th')
+        let text = document.createTextNode(headers[idex])
+        th.appendChild(text)
+        headRow.appendChild(th)
+    }
+
+    for(var index in data) {
+        console.log(data[index])
+        //create entry row
+        let row = table.insertRow()
+
+        //fill row with data
+        for(var item in data[index]) {
+            let cell = row.insertCell()
+            let text = document.createTextNode(data[index][item])
+            cell.appendChild(text)
+        }
+    }
+
+    //Add/Replace on document
+    let empDiv = document.getElementById("employeeTable")
+    if(empDiv.childElementCount) {
+        empDiv.replaceChild(table, empDiv.lastChild)
+    }
+    else {
+        empDiv.appendChild(table)
+    }
 }
 
 //calls server to delete provided business from database
