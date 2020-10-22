@@ -71,15 +71,12 @@ app.post('/createBusiness', async (req, res) => {
                         data.Address.trim()
                     ]
 
-        dataCon.query("INSERT INTO Business (OwnerId, BusId, BusName, Founded, City, State, Address) VALUES (?, ?, ?, ?, ?, ?, ?)", values, (error, result) => {
-            if(error) throw error
+        //Insert data into database
+        insertNewBusiness(values, result => {
+            console.log(result)
             res.sendFile('index.html', {root: __dirname + '/public'})  
-        })
-
-
+        })    
     })
-    //console.log(currMaxBusId)
-    //res.send(req.body.BusinessName + " Created!")
 })
 
 app.listen(port, () => {
@@ -95,4 +92,12 @@ function getMaxBusID(callback) {
     dataCon.query('SELECT max(BusId) as maxID FROM Business', (error, result) => {
         error ? callback(null) : callback(result[0].maxID)
     })    
+}
+
+//Inserts new business into database
+//puts success or error in callback based on database response
+function insertNewBusiness(values, callback) {
+    dataCon.query("INSERT INTO Business (OwnerId, BusId, BusName, Founded, City, State, Address) VALUES (?, ?, ?, ?, ?, ?, ?)", values, (error, result) => {
+        error ? callback("ERROR") : callback("SUCCESS")
+    })
 }
