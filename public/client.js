@@ -2,16 +2,14 @@
 
 
 async function getBusinesses () {
+    //Get business list from server
     const options = {
         method: 'POST'
     }
-
     const result = await fetch('/apiGetBusinesses', options)
     const jsonData = await result.json()
-    jsonData.data.forEach(element => {
-        console.log(element.BusName)
-    });
 
+    //create html table for businesses
     let table = document.createElement('table')
     jsonData.data.forEach(element => {
         let row = document.createElement('tr')
@@ -23,7 +21,16 @@ async function getBusinesses () {
         table.appendChild(row)
     })
 
-    document.getElementById("dataTable").appendChild(table)
+
+    //Add/Replace on document
+    let dataDiv = document.getElementById("dataTable")
+    if(dataDiv.childElementCount) {
+        dataDiv.replaceChild(table, dataDiv.lastChild)
+    }
+    else {
+        dataDiv.appendChild(table)
+    }
+
 
 
 }
