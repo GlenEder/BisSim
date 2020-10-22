@@ -100,7 +100,7 @@ app.post('/createOwnerAndBusiness', (req, res) => {
                     Number(data.EmpID),
                     newBusinessId,
                     data.EmpName.trim(),
-                    Number(data.EmpYear),
+                    data.EmpYear.trim(),
                     data.EmpPos.trim(),
                     startingSalary
                 ]
