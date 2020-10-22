@@ -24,7 +24,6 @@ async function login() {
         let busID = document.getElementById("loginBusID").value
 
         //query server to validate params
-        console.log("Logging in with CREDS: " + empID, ", ", busID)
         let body = JSON.stringify({
             "empID": empID,
             "busID": busID
@@ -33,8 +32,15 @@ async function login() {
         let result = await fetch('/loginUser', {method: 'post', headers: {'Content-Type': 'application/json'}, body})
         let dataReceived = await result.json()
 
-        console.log(dataReceived)
-
+        //login user
+        if(dataReceived.result) {
+            loggedIn = true
+            empId = empID
+            showLoggedIn()
+        }
+        else {
+            alert("ERROR: Employee Does Not Exist")
+        }
     }
     else {
         alert("ERROR: Enter Name and Employee ID")

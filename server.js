@@ -64,7 +64,6 @@ app.post('/loginUser', (req, res) => {
         Number(creds.busID)
     ]
 
-
     //querey for employee
     employeeExists(values, result => {
         let exist = result ? true : false
