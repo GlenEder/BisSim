@@ -266,8 +266,14 @@ function listEmployees(data) {
                 "BusId": bId
             })
 
-            fireEmployee(body, () => {
-
+            fireEmployee(body, result => {
+                if(result == "SUCCESS") {
+                    alert("Employee Fired")
+                    listEmployees(data)
+                }
+                else {
+                    alert("ERROR: Failed to Fire Employee")
+                }
             })
             
         })
@@ -369,5 +375,5 @@ async function fireEmployee(body, callback) {
     let result = await fetch('/fireEmployee', {method: 'post', headers: {'Content-Type': 'application/json'}, body})
     let dataReceived = await result.json()
 
-    console.log(dataReceived)
+    callback(dataReceived.result)
 }

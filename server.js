@@ -211,6 +211,15 @@ app.post('/getBusMaxEmpId', (req, res) => {
 app.post('/fireEmployee', (req, res) => {
     let data = req.body
     console.log(data)
+    const values = [
+        data.EmpId,
+        data.BusId
+    ]
+
+    removeEmployee(values, result => {
+        res.send({"result": result})
+    })
+
 })
 
 app.listen(port, () => {
@@ -284,5 +293,13 @@ function getBusinessMaxEmpId(business, callback) {
     dataCon.query("SELECT max(EmpId) as maxID FROM Employee WHERE BusId = ?", business, (error, result) => {
         if(error) console.log(error)
         error ? callback("ERROR") : callback(result)
+    })
+}
+
+//Removes selected employee from selected business
+function removeEmployee(values, callback) {
+    dataCon.query("DELETE FROM Employee WHERE EmpId = ? AND BusId = ?", values, (error, result) => {
+        if(error) console.log(error)
+        error ? callback("ERROR") : callback("SUCCESS")
     })
 }
