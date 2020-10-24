@@ -93,6 +93,7 @@ async function createOwnerShit() {
 
 }
 
+//displays all businesses on site
 async function getBusinesses () {
     //Get business list from server
     const options = {
@@ -182,6 +183,17 @@ async function getBusinesses () {
 
 
 }
+
+//displays all employees in database on site
+async function getAllEmployees() {
+    let result = await fetch('/getAllEmployees', {method: 'post'})
+    let dataReceived = await result.json()
+
+    listEmployees(dataReceived)
+
+}
+
+
 
 //creats list of employees with given employee array 
 function listEmployees(data) {
