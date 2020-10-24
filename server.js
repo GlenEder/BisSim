@@ -165,6 +165,13 @@ app.post('/removeBusiness', (req, res) => {
 
 })
 
+//Returns all employees in database
+app.post('/getAllEmployees', (req, res) => {
+    getEmployees(response => {
+        res.json(response)
+    })
+})
+
 app.listen(port, () => {
     console.log('Express app listening on http://localhost:', port)
 })
@@ -210,7 +217,7 @@ function employeeExists (values, callback) {
 function getEmployees(callback) {
     dataCon.query("SELECT * FROM Employee", (error, result) => {
         if(error) console.log(error)
-        console.log("Query result: ", result)
+        callback(result)
     })
 }
 
