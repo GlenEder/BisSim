@@ -266,7 +266,10 @@ function listEmployees(data) {
                 "BusId": bId
             })
 
-            console.log(body)
+            fireEmployee(body, () => {
+
+            })
+            
         })
         //add fire button
         fireCell.appendChild(fireButton)
@@ -359,4 +362,12 @@ async function hireEmployee(form) {
     else {
         alert("ERROR: Failed to Hire Employee")
     }
+}
+
+//fires employee with given fields
+async function fireEmployee(body, callback) {
+    let result = await fetch('/fireEmployee', {method: 'post', headers: {'Content-Type': 'application/json'}, body})
+    let dataReceived = await result.json()
+
+    console.log(dataReceived)
 }
