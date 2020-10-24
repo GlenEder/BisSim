@@ -301,5 +301,17 @@ async function getBusinessEmployees(businessID, callback) {
 
 //hires employee with given fields
 async function hireEmployee() {
-    alert("Hiring Employee")
+    let body = JSON.stringify({
+        "EmpId": Number(document.getElementById("ID").value),
+        "BusId": Number(selBus),
+        "Name": document.getElementById("Name").value.trim(),
+        "BirthYear": document.getElementById("Birth").value,
+        "position": document.getElementById("Pos").value.trim(),
+        "Salary": Number(document.getElementById("Salary").value)
+    })
+
+    let result = await fetch('/hireNewEmployee', {method: 'post', headers: {'Content-Type': 'application/json'}, body})
+    let dataReceived = await result.json()
+
+    alert(dataReceived)
 }

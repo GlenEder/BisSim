@@ -177,6 +177,26 @@ app.post('/getAllEmployees', (req, res) => {
     })
 })
 
+//Adds employee to database 
+app.post('/hireNewEmployee', (req, res) => {
+    let data = req.body
+    console.log(data)
+
+    const values = [
+        Number(data.EmpId),
+        Number(data.BusId),
+        data.Name,
+        data.BirthYear, 
+        data.position,
+        Number(data.Salary)
+    ]
+
+    insertNewEmployee(values, result => {
+        res.json(result)
+    })
+})
+
+
 app.listen(port, () => {
     console.log('Express app listening on http://localhost:', port)
 })
