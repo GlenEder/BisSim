@@ -1,7 +1,7 @@
 
 let loggedIn = false    //current user logged in
 let empId = null        //employee id of logged in user
-
+let selBus = null       //business id user has selected
 
 //set onload for document
 window.addEventListener('load', showLoggedIn)
@@ -167,6 +167,9 @@ async function getBusinesses () {
                 return
             }
 
+            //set selected business
+            selBus = element.BusId
+
             //take to hire employee page
             location.href = "/hireEmployee"
 
@@ -294,4 +297,9 @@ async function getBusinessEmployees(businessID, callback) {
     let dataReceived = await result.json()
 
     callback(dataReceived)
+}
+
+//hires employee with given fields
+async function hireEmployee() {
+    alert("Hiring Employee")
 }

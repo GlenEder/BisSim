@@ -6,7 +6,7 @@
     </head>
     <body>
         <h1>Hire An Employee For Your Business</h1>
-        <form>
+        <form onsubmit="hireEmployee()">
             <label>Employee Name:</label><br/>
             <input id="Name" type="text" required="true" /><br/>
 
@@ -21,6 +21,10 @@
 
             <label>Employee Salary(?K):</label><br/>
             <input id="Salary" type="number"  required="true" step="0.1" min="1"/><br/>
+
+            <br/>
+            <br/>
+            <input type="submit" value="Hire Employee" />
         </form>
     </body>
 </html>
