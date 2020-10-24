@@ -200,6 +200,11 @@ app.post('/hireNewEmployee', (req, res) => {
 app.post('/getBusMaxEmpId', (req, res) => {
     let busID = req.body.busID
     console.log(busID)
+
+    getBusinessMaxEmpId(busID, result => {
+        res.send({"maxID": result[0].maxID})
+    })
+
 })
 
 app.listen(port, () => {
@@ -263,6 +268,14 @@ function insertNewEmployee(values, callback) {
 //Retreives employees from provided business in database
 function getBusinessEmployees(business, callback) { 
     dataCon.query("SELECT * FROM Employee WHERE BusId = ?", business, (error, result) => {
+        if(error) console.log(error)
+        error ? callback("ERROR") : callback(result)
+    })
+}
+
+//Retrevies largest employee id of business 
+function getBusinessMaxEmpId(business, callback) {
+    dataCon.query("SELECT max(EmpId) as maxID FROM Employee WHERE BusId = ?", business, (error, result) => {
         if(error) console.log(error)
         error ? callback("ERROR") : callback(result)
     })

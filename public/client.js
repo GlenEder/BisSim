@@ -308,9 +308,9 @@ async function hireEmployee(form) {
     })
     console.log(body)
     let result = await fetch('/getBusMaxEmpId', {method: 'post', headers: {'Content-Type': 'application/json'}, body})
-    newId = await result.json().result
+    let dataRecieved = await result.json()
 
-    console.log(newId)
+    newId = dataRecieved.maxID + 1
 
     //check for error in query 
     if(newId < 1) {
@@ -318,17 +318,23 @@ async function hireEmployee(form) {
         return
     }
 
-    // body = JSON.stringify({
-    //     "EmpId": newId,
-    //     "BusId": selBus,
-    //     "Name": document.getElementById("Name").value.trim(),
-    //     "BirthYear": document.getElementById("Birth").value,
-    //     "position": document.getElementById("Pos").value.trim(),
-    //     "Salary": document.getElementById("Salary").value
-    // })
+    body = JSON.stringify({
+        "EmpId": newId,
+        "BusId": sessionStorage.getItem("selBus"),
+        "Name": document.getElementById("Name").value.trim(),
+        "BirthYear": document.getElementById("Birth").value,
+        "position": document.getElementById("Pos").value.trim(),
+        "Salary": document.getElementById("Salary").value
+    })
 
-    // result = await fetch('/hireNewEmployee', {method: 'post', headers: {'Content-Type': 'application/json'}, body})
-    // let dataReceived = await result.json()
+    result = await fetch('/hireNewEmployee', {method: 'post', headers: {'Content-Type': 'application/json'}, body})
+    dataReceived = await result.json()
 
-    // alert(dataReceived)
+    if(dataRecieved != "ERROR") {
+        alert("SUCCESS: Employee Hired")
+        location.href = "/"
+    }
+    else {
+        alert("ERROR: Failed to Hire Employee")
+    }
 }
