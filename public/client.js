@@ -249,6 +249,37 @@ function listEmployees(data) {
             let text = document.createTextNode(data[index][item])
             cell.appendChild(text)
         }
+
+        //add fire button cell
+        let fireCell = row.insertCell()
+        let fireButton = document.createElement("input")
+        fireButton.type = "button"
+        fireButton.value = "Fire Employee"
+        fireButton.style = "background-color: red"
+        
+        let eId = data[index].EmpId
+        let bId = data[index].BusId
+
+        fireButton.addEventListener('click', () => {
+            let body = JSON.stringify({
+                "EmpId": eId,
+                "BusId": bId
+            })
+
+            fireEmployee(body, result => {
+                if(result == "SUCCESS") {
+                    alert("Employee Fired")
+                    location.href = "/"
+                }
+                else {
+                    alert("ERROR: Failed to Fire Employee")
+                }
+            })
+            
+        })
+        //add fire button
+        fireCell.appendChild(fireButton)
+    
     }
 
     //Add/Replace on document
@@ -337,4 +368,12 @@ async function hireEmployee(form) {
     else {
         alert("ERROR: Failed to Hire Employee")
     }
+}
+
+//fires employee with given fields
+async function fireEmployee(body, callback) {
+    let result = await fetch('/fireEmployee', {method: 'post', headers: {'Content-Type': 'application/json'}, body})
+    let dataReceived = await result.json()
+
+    callback(dataReceived.result)
 }
