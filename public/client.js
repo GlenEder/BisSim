@@ -148,6 +148,29 @@ async function getBusinesses () {
 
         //add to cell
         employeeCell.appendChild(employeeButton)
+
+
+        //create hire emp button 
+        let hireCell = row.insertCell()
+        //create hire button
+        let hireButton = document.createElement('input')
+        hireButton.type = "button"
+        hireButton.value = "Hire Employee"
+        hireButton.style = "background-color: green"
+        hireButton.addEventListener('click', () => {
+            if(!loggedIn) {
+                alert("ERROR: User must be logged")
+                return
+            }
+            else if (element.OwnerId != empId) {
+                alert("ERROR: User does not own selected Business")
+                return
+            }
+
+        })
+        //add button to cell
+        hireCell.appendChild(hireButton)
+    
        
     
         //create delete button cell 
