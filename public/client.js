@@ -249,6 +249,19 @@ function listEmployees(data) {
             let text = document.createTextNode(data[index][item])
             cell.appendChild(text)
         }
+
+        //add fire button cell
+        let fireCell = row.insertCell()
+        let fireButton = document.createElement("input")
+        fireButton.type = "button"
+        fireButton.value = "Fire Employee"
+        fireButton.style = "background-color: red"
+        fireButton.addEventListener('click', () => {
+            alert("Pressed")
+        })
+        //add fire button
+        fireCell.appendChild(fireButton)
+    
     }
 
     //Add/Replace on document
