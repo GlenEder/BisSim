@@ -47,6 +47,11 @@ app.get('/createOwner', (req, res) => {
     res.sendFile('createOwner.html', {root: __dirname + '/public'})  
 })
 
+//send hire employee page
+app.get('/hireEmployee', (req, res) => {
+    res.sendFile('hireEmployee.html', {root: __dirname + '/public'})
+})
+
 //returns employees in selected business 
 app.post('/getBusinessEmployees', (req, res) => {
     const data = req.body

@@ -167,6 +167,9 @@ async function getBusinesses () {
                 return
             }
 
+            //take to hire employee page
+            location.href = "/hireEmployee"
+
         })
         //add button to cell
         hireCell.appendChild(hireButton)
