@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <script src="client.js"></script>
+    </head>
+    <body>
+        <h1>Hire An Employee For Your Business</h1>
+        <form onsubmit="hireEmployee(this); return false">
+            <label>Employee Name:</label><br/>
+            <input id="Name" type="text" required="true" /><br/>
+
+            <label>Employee Birthday:</label><br/>
+            <input id="Birth" type="date" required="true" /><br/>
+
+            <label>Employee Position:</label><br/>
+            <input id="Pos" type="text" required="true" /><br/>
+
+            <label>Employee Salary(?K):</label><br/>
+            <input id="Salary" type="number"  required="true" step="0.1" min="1"/><br/>
+
+            <br/>
+            <input type="submit" value="Hire Employee" />
+        </form>
+    </body>
+</html>

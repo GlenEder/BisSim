@@ -47,6 +47,11 @@ app.get('/createOwner', (req, res) => {
     res.sendFile('createOwner.html', {root: __dirname + '/public'})  
 })
 
+//send hire employee page
+app.get('/hireEmployee', (req, res) => {
+    res.sendFile('hireEmployee.html', {root: __dirname + '/public'})
+})
+
 //returns employees in selected business 
 app.post('/getBusinessEmployees', (req, res) => {
     const data = req.body
@@ -172,6 +177,36 @@ app.post('/getAllEmployees', (req, res) => {
     })
 })
 
+//Adds employee to database 
+app.post('/hireNewEmployee', (req, res) => {
+    let data = req.body
+    console.log(data)
+
+    const values = [
+        Number(data.EmpId),
+        Number(data.BusId),
+        data.Name,
+        data.BirthYear, 
+        data.position,
+        Number(data.Salary)
+    ]
+
+    insertNewEmployee(values, result => {
+        res.json(result)
+    })
+})
+
+//Returns the max id of the provided business
+app.post('/getBusMaxEmpId', (req, res) => {
+    let busID = req.body.busID
+    console.log(busID)
+
+    getBusinessMaxEmpId(busID, result => {
+        res.send({"maxID": result[0].maxID})
+    })
+
+})
+
 app.listen(port, () => {
     console.log('Express app listening on http://localhost:', port)
 })
@@ -233,6 +268,14 @@ function insertNewEmployee(values, callback) {
 //Retreives employees from provided business in database
 function getBusinessEmployees(business, callback) { 
     dataCon.query("SELECT * FROM Employee WHERE BusId = ?", business, (error, result) => {
+        if(error) console.log(error)
+        error ? callback("ERROR") : callback(result)
+    })
+}
+
+//Retrevies largest employee id of business 
+function getBusinessMaxEmpId(business, callback) {
+    dataCon.query("SELECT max(EmpId) as maxID FROM Employee WHERE BusId = ?", business, (error, result) => {
         if(error) console.log(error)
         error ? callback("ERROR") : callback(result)
     })

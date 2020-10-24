@@ -2,7 +2,6 @@
 let loggedIn = false    //current user logged in
 let empId = null        //employee id of logged in user
 
-
 //set onload for document
 window.addEventListener('load', showLoggedIn)
 
@@ -148,6 +147,35 @@ async function getBusinesses () {
 
         //add to cell
         employeeCell.appendChild(employeeButton)
+
+
+        //create hire emp button 
+        let hireCell = row.insertCell()
+        //create hire button
+        let hireButton = document.createElement('input')
+        hireButton.type = "button"
+        hireButton.value = "Hire Employee"
+        hireButton.style = "background-color: green"
+        hireButton.addEventListener('click', () => {
+            if(!loggedIn) {
+                alert("ERROR: User must be logged")
+                return
+            }
+            else if (element.OwnerId != empId) {
+                alert("ERROR: User does not own selected Business")
+                return
+            }
+
+            //set selected business
+            sessionStorage.setItem("selBus", element.BusId)
+
+            //take to hire employee page
+            location.href = "/hireEmployee"
+
+        })
+        //add button to cell
+        hireCell.appendChild(hireButton)
+    
        
     
         //create delete button cell 
@@ -268,4 +296,45 @@ async function getBusinessEmployees(businessID, callback) {
     let dataReceived = await result.json()
 
     callback(dataReceived)
+}
+
+//hires employee with given fields
+async function hireEmployee(form) {
+
+    //assign employee id
+    let newId = -1
+    let body = JSON.stringify({
+        "busID": sessionStorage.getItem("selBus")
+    })
+    console.log(body)
+    let result = await fetch('/getBusMaxEmpId', {method: 'post', headers: {'Content-Type': 'application/json'}, body})
+    let dataRecieved = await result.json()
+
+    newId = dataRecieved.maxID + 1
+
+    //check for error in query 
+    if(newId < 1) {
+        alert("ERROR: Could not create new employee")
+        return
+    }
+
+    body = JSON.stringify({
+        "EmpId": newId,
+        "BusId": sessionStorage.getItem("selBus"),
+        "Name": document.getElementById("Name").value.trim(),
+        "BirthYear": document.getElementById("Birth").value,
+        "position": document.getElementById("Pos").value.trim(),
+        "Salary": document.getElementById("Salary").value
+    })
+
+    result = await fetch('/hireNewEmployee', {method: 'post', headers: {'Content-Type': 'application/json'}, body})
+    dataReceived = await result.json()
+
+    if(dataRecieved != "ERROR") {
+        alert("SUCCESS: Employee Hired")
+        location.href = "/"
+    }
+    else {
+        alert("ERROR: Failed to Hire Employee")
+    }
 }
