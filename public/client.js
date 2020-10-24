@@ -269,7 +269,7 @@ function listEmployees(data) {
             fireEmployee(body, result => {
                 if(result == "SUCCESS") {
                     alert("Employee Fired")
-                    listEmployees(data)
+                    location.href = "/"
                 }
                 else {
                     alert("ERROR: Failed to Fire Employee")
