@@ -196,6 +196,11 @@ app.post('/hireNewEmployee', (req, res) => {
     })
 })
 
+//Returns the max id of the provided business
+app.post('/getBusMaxEmpId', (req, res) => {
+    let busID = req.body.busID
+    console.log(busID)
+})
 
 app.listen(port, () => {
     console.log('Express app listening on http://localhost:', port)

@@ -1,7 +1,6 @@
 
 let loggedIn = false    //current user logged in
 let empId = null        //employee id of logged in user
-let selBus = null       //business id user has selected
 
 //set onload for document
 window.addEventListener('load', showLoggedIn)
@@ -168,7 +167,7 @@ async function getBusinesses () {
             }
 
             //set selected business
-            selBus = element.BusId
+            sessionStorage.setItem("selBus", element.BusId)
 
             //take to hire employee page
             location.href = "/hireEmployee"
@@ -300,18 +299,36 @@ async function getBusinessEmployees(businessID, callback) {
 }
 
 //hires employee with given fields
-async function hireEmployee() {
+async function hireEmployee(form) {
+
+    //assign employee id
+    let newId = -1
     let body = JSON.stringify({
-        "EmpId": Number(document.getElementById("ID").value),
-        "BusId": Number(selBus),
-        "Name": document.getElementById("Name").value.trim(),
-        "BirthYear": document.getElementById("Birth").value,
-        "position": document.getElementById("Pos").value.trim(),
-        "Salary": Number(document.getElementById("Salary").value)
+        "busID": sessionStorage.getItem("selBus")
     })
+    console.log(body)
+    let result = await fetch('/getBusMaxEmpId', {method: 'post', headers: {'Content-Type': 'application/json'}, body})
+    newId = await result.json().result
 
-    let result = await fetch('/hireNewEmployee', {method: 'post', headers: {'Content-Type': 'application/json'}, body})
-    let dataReceived = await result.json()
+    console.log(newId)
 
-    alert(dataReceived)
+    //check for error in query 
+    if(newId < 1) {
+        alert("ERROR: Could not create new employee")
+        return
+    }
+
+    // body = JSON.stringify({
+    //     "EmpId": newId,
+    //     "BusId": selBus,
+    //     "Name": document.getElementById("Name").value.trim(),
+    //     "BirthYear": document.getElementById("Birth").value,
+    //     "position": document.getElementById("Pos").value.trim(),
+    //     "Salary": document.getElementById("Salary").value
+    // })
+
+    // result = await fetch('/hireNewEmployee', {method: 'post', headers: {'Content-Type': 'application/json'}, body})
+    // let dataReceived = await result.json()
+
+    // alert(dataReceived)
 }
