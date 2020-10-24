@@ -256,8 +256,17 @@ function listEmployees(data) {
         fireButton.type = "button"
         fireButton.value = "Fire Employee"
         fireButton.style = "background-color: red"
+        
+        let eId = data[index].EmpId
+        let bId = data[index].BusId
+
         fireButton.addEventListener('click', () => {
-            alert("Pressed")
+            let body = JSON.stringify({
+                "EmpId": eId,
+                "BusId": bId
+            })
+
+            console.log(body)
         })
         //add fire button
         fireCell.appendChild(fireButton)

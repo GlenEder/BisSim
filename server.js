@@ -207,6 +207,12 @@ app.post('/getBusMaxEmpId', (req, res) => {
 
 })
 
+//Removes provided employee from business
+app.post('/fireEmployee', (req, res) => {
+    let data = req.body
+    console.log(data)
+})
+
 app.listen(port, () => {
     console.log('Express app listening on http://localhost:', port)
 })
