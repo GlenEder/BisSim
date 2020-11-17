@@ -249,6 +249,13 @@ function listEmployees(data) {
             cell.appendChild(text)
         }
 
+        let eId = data[index].EmpId
+        let bId = data[index].BusId
+
+        //skip fire button if owner
+        if(eId == localStorage.getItem('empId')) continue
+        
+
         //add fire button cell
         let fireCell = row.insertCell()
         let fireButton = document.createElement("input")
@@ -256,14 +263,10 @@ function listEmployees(data) {
         fireButton.value = "Fire Employee"
         fireButton.style = "background-color: red"
         
-        let eId = data[index].EmpId
-        let bId = data[index].BusId
+        
 
         fireButton.addEventListener('click', () => {
-            //check that user is owner
-            verifyIsOwner(bId, eId, isOwner => {
-                if(!isOwner) showError("User not owner of business")
-
+           
                 let body = JSON.stringify({
                     "EmpId": eId,
                     "BusId": bId
@@ -278,7 +281,6 @@ function listEmployees(data) {
                         showError("Failed to fire employee")
                     }
                 })
-            })
         })
         //add fire button
         fireCell.appendChild(fireButton)
