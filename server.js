@@ -61,6 +61,17 @@ app.get('/hireEmployee', (req, res) => {
     res.sendFile('hireEmployee.html', {root: __dirname + '/public'})
 })
 
+//send market page
+app.get('/market', (req, res) => {
+    res.sendFile('/market.html', {root: __dirname + '/public'})
+})
+
+
+////////////////////
+///POST CALSS//////
+/////////////////
+
+
 //returns employees in selected business 
 app.post('/getBusinessEmployees', (req, res) => {
     const data = req.body
