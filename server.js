@@ -112,7 +112,7 @@ app.post('/createOwnerAndBusiness', (req, res) => {
                     newBusinessId,
                     data.EmpName.trim(),
                     data.EmpYear.trim(),
-                    data.EmpPos.trim(),
+                    "Owner",
                     startingSalary
                 ]
                 console.log("User values: ", userValues)

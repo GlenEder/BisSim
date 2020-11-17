@@ -1,6 +1,11 @@
 //set onload for document
 window.addEventListener('load', showLoggedIn)
 
+//returns emp id if user is logged in, null otherwise
+function isLoggedIn() {
+    return localStorage.getItem('empId')
+}
+
 //Sets header text to display if user is logged in 
 function showLoggedIn() {
     let info = document.getElementById("loginHUD")
@@ -60,7 +65,6 @@ async function createOwnerShit() {
         "EmpID": document.getElementById("EmpID").value,
         "EmpName": document.getElementById("EmpName").value,
         "EmpYear": document.getElementById("EmpYear").value,
-        "EmpPos": document.getElementById("EmpPos").value,
         "BusinessName": document.getElementById("BusinessName").value,
         "YearFounded": document.getElementById("YearFounded").value,
         "Address": document.getElementById("Address").value,
@@ -285,7 +289,9 @@ function listEmployees(data) {
 //calls server to delete provided business from database
 async function deleteBusiness(ownerID, businessID, callback) {
 
-    if(!loggedIn) {
+    let empId = isLoggedIn()
+
+    if(empId === null) {
         callback("ERROR: Login to delete business")
         return
     }
