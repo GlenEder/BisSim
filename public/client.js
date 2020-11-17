@@ -78,10 +78,10 @@ async function createOwnerShit() {
     console.log(dataReceived)
     if(dataReceived.result == "SUCCESS") {
         alert("Creation Successful: Login Creds Below\nEmployee Id: " + dataReceived.emp + "\nBusiness Id: " + dataReceived.bus)
-        location.href("/home")
+        window.location.href = '/home'
     }
     else {
-        alert(dataReceived.result)
+        showError("Failed to create user and business")
     }
 
 }
@@ -151,12 +151,11 @@ async function getBusinesses () {
         hireButton.value = "Hire Employee"
         hireButton.style = "background-color: green"
         hireButton.addEventListener('click', () => {
-            if(!loggedIn) {
-                alert("ERROR: User must be logged")
-                return
-            }
-            else if (element.OwnerId != empId) {
-                alert("ERROR: User does not own selected Business")
+            let empId = isLoggedIn();
+            if(empId === null) handleSignedoutError()
+
+            if (element.OwnerId != empId) {
+                showError("User does not own business")
                 return
             }
 
@@ -215,7 +214,11 @@ async function getAllEmployees() {
 
 }
 
-
+//alerts user that they are not signed in and takes to login screen
+function handleSignedoutError() {
+    showError("User not logged in")
+    window.location.href = '/'
+}
 
 //creats list of employees with given employee array 
 function listEmployees(data) {
@@ -255,21 +258,25 @@ function listEmployees(data) {
         let bId = data[index].BusId
 
         fireButton.addEventListener('click', () => {
-            let body = JSON.stringify({
-                "EmpId": eId,
-                "BusId": bId
-            })
+            //check that user is owner
+            verifyIsOwner(bId, eId, isOwner => {
+                if(!isOwner) showError("User not owner of business")
 
-            fireEmployee(body, result => {
-                if(result == "SUCCESS") {
-                    alert("Employee Fired")
-                    location.href = "/"
-                }
-                else {
-                    alert("ERROR: Failed to Fire Employee")
-                }
+                let body = JSON.stringify({
+                    "EmpId": eId,
+                    "BusId": bId
+                })
+    
+                fireEmployee(body, result => {
+                    if(result == "SUCCESS") {
+                        alert("Employee Fired")
+                        location.href = "/"
+                    }
+                    else {
+                        showError("Failed to fire employee")
+                    }
+                })
             })
-            
         })
         //add fire button
         fireCell.appendChild(fireButton)
@@ -289,11 +296,10 @@ function listEmployees(data) {
 //calls server to delete provided business from database
 async function deleteBusiness(ownerID, businessID, callback) {
 
-    let empId = isLoggedIn()
+    let empId = isLoggedIn() 
 
     if(empId === null) {
-        callback("ERROR: Login to delete business")
-        return
+        handleSignedoutError()
     }
 
     if(ownerID != empId) {
@@ -368,8 +374,27 @@ async function hireEmployee(form) {
 
 //fires employee with given fields
 async function fireEmployee(body, callback) {
+
+
     let result = await fetch('/fireEmployee', {method: 'post', headers: {'Content-Type': 'application/json'}, body})
     let dataReceived = await result.json()
 
     callback(dataReceived.result)
+}
+
+//returns true if provided id is owner of business
+async function verifyIsOwner(busID, empID, callback) {
+    let body = JSON.stringify( {
+        "businessID": busID
+    })
+
+    let result = await fetch('/getBusOwner', {method: 'post', headers: {'Content-Type': 'application/json'}, body})
+    let dataReceived = await result.json()
+    
+    dataReceived.result == empID ? callback(true) : callback(false)
+
+}
+
+function showError(msg) {
+    alert("ERROR: " + msg)
 }

@@ -8,6 +8,7 @@ const upload = multer()
 //Game values
 const startingSalary = 5
 
+
 //init database 
 const mysql = require('mysql')
 const dataCon = mysql.createConnection({
@@ -228,9 +229,31 @@ app.post('/fireEmployee', (req, res) => {
 
 })
 
+app.post('/getBusOwner', (req, res) => {
+    let busID = req.body.businessID
+    getOwnerId(busID, result => {
+        res.send({"result": result})
+    })
+})
+
 app.listen(port, () => {
     console.log('Express app listening on http://localhost:', port)
 })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /*===================
 ===Query functions===
@@ -307,5 +330,14 @@ function removeEmployee(values, callback) {
     dataCon.query("DELETE FROM Employee WHERE EmpId = ? AND BusId = ?", values, (error, result) => {
         if(error) console.log(error)
         error ? callback("ERROR") : callback("SUCCESS")
+    })
+}
+
+//Returns business's owner id
+function getOwnerId(business, callback) {
+    console.log("QUERYING BUSINESS(" + business + ") FOR ITS OWNER")
+    dataCon.query("SELECT OwnerId FROM Business WHERE BusId = ?", business, (error, result) => {
+        if(error) console.log(error)
+        error ? callback("ERROR") : callback(result[0].OwnerId)
     })
 }
