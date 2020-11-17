@@ -341,7 +341,7 @@ async function hireEmployee(form) {
     //assign employee id
     let newId = -1
     let body = JSON.stringify({
-        "busID": sessionStorage.getItem("selBus")
+        "busID": localStorage.getItem("busId")
     })
     console.log(body)
     let result = await fetch('/getBusMaxEmpId', {method: 'post', headers: {'Content-Type': 'application/json'}, body})
@@ -369,7 +369,7 @@ async function hireEmployee(form) {
 
     if(dataRecieved != "ERROR") {
         alert("SUCCESS: Employee Hired")
-        location.href = '/'
+        location.href = '/homePage'
     }
     else {
         alert("ERROR: Failed to Hire Employee")
