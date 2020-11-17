@@ -40,15 +40,17 @@ async function login() {
 
         //login user
         if(dataReceived.result) {
+
             localStorage.setItem('empId', empID)
+            localStorage.setItem('busId', busID)
             location.href = '/home'
         }
         else {
-            alert("ERROR: Employee Does Not Exist")
+            showError("Employee does not exist")
         }
     }
     else {
-        alert("ERROR: Enter Name and Employee ID")
+        showError("Invalid login parameters")
     }
 }
 
@@ -384,9 +386,7 @@ async function fireEmployee(body, callback) {
 
 //returns true if provided id is owner of business
 async function verifyIsOwner(busID, empID, callback) {
-    let body = JSON.stringify( {
-        "businessID": busID
-    })
+    let body = JSON.stringify( {"businessID": busID} )
 
     let result = await fetch('/getBusOwner', {method: 'post', headers: {'Content-Type': 'application/json'}, body})
     let dataReceived = await result.json()
