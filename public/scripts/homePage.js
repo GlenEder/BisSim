@@ -24,8 +24,14 @@ async function displayBusinessName () {
     }
 }
 
+//renders employee table on home page
 async function viewEmployees () {
     getBusinessEmployees(currentBusiness.id, result => {
         listEmployees(result)
     })
+}
+
+//confirms deletion of business
+function confirmBusinessDelete () {
+    console.log(confirm("Press OK to continue with deletion.\nThis will remove all employees including the owner."))
 }
