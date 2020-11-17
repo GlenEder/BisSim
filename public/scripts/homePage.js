@@ -23,3 +23,9 @@ async function displayBusinessName () {
         display.innerHTML = "ERROR: Could Not Retreive Business"
     }
 }
+
+async function viewEmployees () {
+    getBusinessEmployees(currentBusiness.id, result => {
+        listEmployees(result)
+    })
+}

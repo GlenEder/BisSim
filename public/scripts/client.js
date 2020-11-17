@@ -286,7 +286,7 @@ function listEmployees(data) {
     }
 
     //Add/Replace on document
-    let empDiv = document.getElementById("employeeTable")
+    let empDiv = document.getElementById("dataTable")
     if(empDiv.childElementCount) {
         empDiv.replaceChild(table, empDiv.lastChild)
     }
