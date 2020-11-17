@@ -20,7 +20,8 @@ async function displayBusinessName () {
         display.innerHTML = currentBusiness.name
     }
     else {
-        display.innerHTML = "ERROR: Could Not Retreive Business"
+        showError("Could not retreive business")
+        location.href = '/'
     }
 }
 
@@ -33,5 +34,10 @@ async function viewEmployees () {
 
 //confirms deletion of business
 function confirmBusinessDelete () {
-    console.log(confirm("Press OK to continue with deletion.\nThis will remove all employees including the owner."))
+    if(confirm("Press OK to continue with deletion.\nThis will remove all employees including the owner.")) {
+        deleteBusiness(localStorage.getItem('empId'), currentBusiness.id, result => {
+            alert(result);
+            if(result.includes("SUCCESS")) { location.href = '/'}
+        })
+    }
 }

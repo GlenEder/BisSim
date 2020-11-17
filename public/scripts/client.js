@@ -80,6 +80,7 @@ async function createOwnerShit() {
     console.log(dataReceived)
     if(dataReceived.result == "SUCCESS") {
         alert("Creation Successful: Login Creds Below\nEmployee Id: " + dataReceived.emp + "\nBusiness Id: " + dataReceived.bus)
+        localStorage.setItem('empId', dataReceived.emp);
         window.location.href = '/home'
     }
     else {
