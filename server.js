@@ -36,6 +36,11 @@ app.get('/', (req, res) => {
     res.sendFile('login.html', {root: __dirname + '/public'})
 })
 
+//send home page
+app.get('/home', (req, res) => {
+    res.sendFile('home.html', {root: __dirname + '/public'})
+})
+
 //send create business page
 app.get('/createBusiness', (req, res) => {
     console.log("Sending create busines page")

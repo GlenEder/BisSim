@@ -47,7 +47,7 @@ async function login() {
         if(dataReceived.result) {
             loggedIn = true
             empId = empID
-            showLoggedIn()
+            location.href = '/home'
         }
         else {
             alert("ERROR: Employee Does Not Exist")
@@ -85,6 +85,7 @@ async function createOwnerShit() {
     console.log(dataReceived)
     if(dataReceived.result == "SUCCESS") {
         alert("Creation Successful: Login Creds Below\nEmployee Id: " + dataReceived.emp + "\nBusiness Id: " + dataReceived.bus)
+        location.href("/home")
     }
     else {
         alert(dataReceived.result)
@@ -363,7 +364,7 @@ async function hireEmployee(form) {
 
     if(dataRecieved != "ERROR") {
         alert("SUCCESS: Employee Hired")
-        location.href = "/"
+        location.href = '/'
     }
     else {
         alert("ERROR: Failed to Hire Employee")
