@@ -1,7 +1,3 @@
-
-let loggedIn = false    //current user logged in
-let empId = null        //employee id of logged in user
-
 //set onload for document
 window.addEventListener('load', showLoggedIn)
 
@@ -9,6 +5,9 @@ window.addEventListener('load', showLoggedIn)
 function showLoggedIn() {
     let info = document.getElementById("loginHUD")
     if(info == null) return     //Error checking as using this file for other pages
+
+    const empId = localStorage.getItem('empId');
+    let loggedIn = empId == null ? false : true
 
     if(loggedIn) {
         info.innerHTML = "Logged in as Employee: " + empId
@@ -20,15 +19,6 @@ function showLoggedIn() {
 
 //logs in user based on creds
 async function login() {
-
-    //logout if user is already logged in
-    if(loggedIn) {
-        loggedIn = false
-        empId = null
-        alert("User Logged Out")
-        showLoggedIn()
-        return
-    }
 
     if(verifyLoginParams()) {
         let empID = document.getElementById("loginEmpID").value
@@ -45,8 +35,7 @@ async function login() {
 
         //login user
         if(dataReceived.result) {
-            loggedIn = true
-            empId = empID
+            localStorage.setItem('empId', empID)
             location.href = '/home'
         }
         else {
