@@ -32,7 +32,8 @@ app.use(express.json({limit: '1mb'}))
 
 //send landing page to user
 app.get('/', (req, res) => {
-    res.sendFile('index.html', {root: __dirname + '/public'})
+    console.log("Sending file")
+    res.sendFile('login.html', {root: __dirname + '/public'})
 })
 
 //send create business page
