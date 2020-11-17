@@ -8,6 +8,7 @@ const upload = multer()
 //Game values
 const startingSalary = 5
 
+
 //init database 
 const mysql = require('mysql')
 const dataCon = mysql.createConnection({
@@ -32,7 +33,13 @@ app.use(express.json({limit: '1mb'}))
 
 //send landing page to user
 app.get('/', (req, res) => {
-    res.sendFile('index.html', {root: __dirname + '/public'})
+    console.log("Sending file")
+    res.sendFile('login.html', {root: __dirname + '/public'})
+})
+
+//send home page
+app.get('/home', (req, res) => {
+    res.sendFile('home.html', {root: __dirname + '/public'})
 })
 
 //send create business page
@@ -106,7 +113,7 @@ app.post('/createOwnerAndBusiness', (req, res) => {
                     newBusinessId,
                     data.EmpName.trim(),
                     data.EmpYear.trim(),
-                    data.EmpPos.trim(),
+                    "Owner",
                     startingSalary
                 ]
                 console.log("User values: ", userValues)
@@ -222,9 +229,31 @@ app.post('/fireEmployee', (req, res) => {
 
 })
 
+app.post('/getBusOwner', (req, res) => {
+    let busID = req.body.businessID
+    getOwnerId(busID, result => {
+        res.send({"result": result})
+    })
+})
+
 app.listen(port, () => {
     console.log('Express app listening on http://localhost:', port)
 })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /*===================
 ===Query functions===
@@ -301,5 +330,14 @@ function removeEmployee(values, callback) {
     dataCon.query("DELETE FROM Employee WHERE EmpId = ? AND BusId = ?", values, (error, result) => {
         if(error) console.log(error)
         error ? callback("ERROR") : callback("SUCCESS")
+    })
+}
+
+//Returns business's owner id
+function getOwnerId(business, callback) {
+    console.log("QUERYING BUSINESS(" + business + ") FOR ITS OWNER")
+    dataCon.query("SELECT OwnerId FROM Business WHERE BusId = ?", business, (error, result) => {
+        if(error) console.log(error)
+        error ? callback("ERROR") : callback(result[0].OwnerId)
     })
 }
