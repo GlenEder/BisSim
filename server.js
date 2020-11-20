@@ -256,6 +256,12 @@ app.post('/getProducts', (req, res) => {
     })
 })
 
+app.post('/findSellers', (req, res) => {
+    getSellersOfItem(req.body.item, result => {
+        res.send({"result": result})
+    })
+})
+
 app.listen(port, () => {
     console.log('Express app listening on http://localhost:', port)
 })
@@ -423,6 +429,16 @@ function getProducts(orderby, decending, callback) {
             error ? callback(null) : callback(result) 
         })
     }
+}
 
-   
+//Returns businesses and quanties of item if they have it 
+function getSellersOfItem(item, callback) {
+
+    if(serverLogs) console.log("Finding sellers for item(" + item + ")")
+
+    dataCon.query("SELECT * FROM Quantity NATURAL JOIN Business WHERE ItemNum = ?", item, (error, result) => {
+        if(error) console.log(error)
+        error ? callback(null) : callback(result)
+    })
+
 }

@@ -117,10 +117,10 @@ async function displayProducts () {
 }
 
 //displays businesses that sell the provided item id
-function displaySellers(item) {
+async function displaySellers(item) {
 
     let body = JSON.stringify({item: item})
-    let dataReceived = fetchServer('/findSellers', body)
+    let dataReceived = await fetchServer('/findSellers', body)
 
     console.log(dataReceived)
 
