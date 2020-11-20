@@ -162,6 +162,17 @@ async function displaySellers(item) {
             cell.appendChild(document.createTextNode(cellText))
         }
 
+        //create buy product button
+        let buttonCell = row.insertCell()
+        let button = document.createElement('input')
+        button.type = 'button'
+        button.value = 'Buy Product From This Seller'
+        button.addEventListener('click', () => {
+            alert("TODO purchase page")
+        })
+
+        buttonCell.appendChild(button)
+
     }
 
 
