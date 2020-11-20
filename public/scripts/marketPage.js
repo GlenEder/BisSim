@@ -1,23 +1,34 @@
 //set onload for document
-window.addEventListener('load', firstDisplay)
+window.addEventListener('load', displayProducts)
 
 //available products 
 let products = []
 
+let currentOrder = "ItemNum"
+let currentlyDesc = false
+
 //change sorting 
+function changeSorting(orderBy) {
 
+    if(currentOrder == orderBy) {
+        currentlyDesc = !currentlyDesc
+    }
+    else {
+        currentOrder = orderBy
+        currentlyDesc = false
+    }
 
-function firstDisplay () {
-    displayProducts("ItemNum", true)
+    displayProducts()
+
 }
 
 //Display available products on table 
-async function displayProducts (order, desc) {
+async function displayProducts () {
 
     //call server for products 
     let body = JSON.stringify({
-        orderBy: order,
-        desc: desc
+        orderBy: currentOrder,
+        desc: currentlyDesc
     })
     let dataReceived = await fetchServer('/getProducts', body)
 
@@ -73,11 +84,13 @@ async function displayProducts (order, desc) {
 
     //Add table to page
     let tableDiv = document.getElementById("marketTable")
-    if(tableDiv.childElementCount) {
-        tableDiv.replaceChild(table, tableDiv.lastChild)
+    console.log(tableDiv.childElementCount)
+    if(tableDiv.children.length) {
+        tableDiv.removeChild(tableDiv.lastChild)
+    
     }
-    else {
-        tableDiv.appendChild(table)
-    }
+    
+    tableDiv.appendChild(table)
+    
 
 }
