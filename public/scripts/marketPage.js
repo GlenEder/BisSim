@@ -86,7 +86,8 @@ async function displayProducts () {
 
     //Add table to page
     let tableDiv = document.getElementById("marketTable")
-    console.log(tableDiv.childElementCount)
+    
+    //remove existing table 
     if(tableDiv.children.length) {
         tableDiv.removeChild(tableDiv.lastChild)
     
