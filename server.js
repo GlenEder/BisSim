@@ -245,6 +245,23 @@ app.post('/getBusiness', (req, res) => {
     })
 }) 
 
+//Returns products 
+app.post('/getProducts', (req, res) => {
+
+    let orderBy = req.body.orderBy
+    let desc = req.body.desc
+
+    getProducts(orderBy, desc, result => {
+        res.send({"result": result})
+    })
+})
+
+app.post('/findSellers', (req, res) => {
+    getSellersOfItem(req.body.item, result => {
+        res.send({"result": result})
+    })
+})
+
 app.listen(port, () => {
     console.log('Express app listening on http://localhost:', port)
 })
@@ -390,4 +407,42 @@ function getOwnerId(business, callback) {
         if(error) console.log(error)
         error ? callback("ERROR") : callback(result[0].OwnerId)
     })
+}
+
+//Returns products in database in ordered fashion
+//pass decending as false to order by ascending  
+function getProducts(orderby, decending, callback) {
+    if(serverLogs) console.log("Querying for products ordered by " + orderby + ", desc: " + decending)
+
+    let query = "SELECT * FROM Items ORDER BY " + orderby
+    decending ? query += " DESC" : query += " ASC"
+
+    if(decending) {
+        dataCon.query(query, (error, result) => {
+            if(error) console.log(error)
+            error ? callback(null) : callback(result) 
+        })
+    }
+    else {
+        dataCon.query(query, (error, result) => {
+            if(error) console.log(error)
+            error ? callback(null) : callback(result) 
+        })
+    }
+}
+
+//Returns businesses and quanties of item if they have it 
+function getSellersOfItem(item, callback) {
+
+    if(serverLogs) console.log("Finding sellers for item(" + item + ")")
+
+    let query = "SELECT * FROM Quantity INNER JOIN Business ON Quantity.BusId = Business.BusId WHERE ItemNum = \"" + item + "\""
+
+    console.log(query)
+
+    dataCon.query(query, (error, result) => {
+        if(error) console.log(error)
+        error ? callback(null) : callback(result)
+    })
+
 }

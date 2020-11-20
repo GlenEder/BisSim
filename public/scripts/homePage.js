@@ -10,8 +10,7 @@ async function displayBusinessName () {
     let bId = localStorage.getItem('busId')
 
     let body = JSON.stringify({"businessID": bId})
-    let result = await fetch('/getBusiness', {method: 'post', headers: {'Content-Type': 'application/json'}, body})
-    let dataReceived = await result.json()
+    let dataReceived = await fetchServer('/getBusiness', body)
     let busData = dataReceived.result
 
     if(busData) {

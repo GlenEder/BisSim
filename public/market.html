@@ -3,9 +3,21 @@
     <head>
         <meta charset="utf-8" />
         <title>BisSim Market</title>
+        <script src="scripts/client.js"></script>
+        <script src="scripts/marketPage.js"></script>
+        <script src="objects/product.js"></script>
     </head>
     <body>
         <h1>BisSim Market</h1>
+        <label>Sorting Options:</label>
+        <input type="button" value="ID" onclick="changeSorting('ItemNum')"/>
+        <input type="button" value="NAME" onclick="changeSorting('ItemName')" />
+        <input type="button" value="BRAND" onclick="changeSorting('Brand')"/>
+        
         <div id="marketTable"></div>
+        <div id="sellersTable"></div>
+
+        <br/><br/>
+        <input type="button" value="Go to Home Page" onclick="location.href='/home'" />
     </body>
 </html>

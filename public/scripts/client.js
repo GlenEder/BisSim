@@ -35,8 +35,8 @@ async function login() {
             "busID": busID
         })
 
-        let result = await fetch('/loginUser', {method: 'post', headers: {'Content-Type': 'application/json'}, body})
-        let dataReceived = await result.json()
+        //call server to login user
+        let dataReceived = await fetchServer('/loginUser', body)
 
         //login user
         if(dataReceived.result) {
@@ -74,10 +74,9 @@ async function createOwnerShit() {
         "State": document.getElementById("State").value
     })
 
-    let result = await fetch('/createOwnerAndBusiness', {method: 'post', headers: {'Content-Type': 'application/json'}, body})
-    let dataReceived = await result.json()
+    //call server 
+    let dataReceived = await fetchServer('/createOwnerAndBusiness', body)
 
-    console.log(dataReceived)
     if(dataReceived.result == "SUCCESS") {
         alert("Creation Successful: Login Creds Below\nEmployee Id: " + dataReceived.emp + "\nBusiness Id: " + dataReceived.bus)
         localStorage.setItem('empId', dataReceived.emp);
@@ -89,131 +88,11 @@ async function createOwnerShit() {
 
 }
 
-//displays all businesses on site
-async function getBusinesses () {
-    //Get business list from server
-    const options = {
-        method: 'POST'
-    }
-    const result = await fetch('/apiGetBusinesses', options)
-    const jsonData = await result.json()
-
-    //create html table for businesses
-    let table = document.createElement('table')
-
-    //create table headers
-    let theader = table.createTHead()
-    let headRow = theader.insertRow()
-    let headers = ['OwnerId', 'BusinessId', 'Business Name', 'Year Founded', 'City', 'State', 'Address']
-    for(var idex in headers) {
-        let th = document.createElement('th')
-        let text = document.createTextNode(headers[idex])
-        th.appendChild(text)
-        headRow.appendChild(th)
-    }
-
-    //Fill table with data
-    jsonData.data.forEach(element => {
-        
-        //create entry row
-        let row = table.insertRow()
-
-        //fill row with data
-        for(var item in element) {
-            let cell = row.insertCell()
-            let text = document.createTextNode(element[item])
-            cell.appendChild(text)
-        }
-
-        //create list employees button
-        let employeeCell = row.insertCell()
-
-        //create button
-        let employeeButton = document.createElement('input')
-        employeeButton.type = "button"
-        employeeButton.value = "Display employees"
-        employeeButton.style = "background-color: green"
-        employeeButton.addEventListener('click', () => {
-            getBusinessEmployees(element.BusId, result => {
-                //console.log(result)
-
-                //create employee list
-                listEmployees(result)
-            })
-        })
-
-        //add to cell
-        employeeCell.appendChild(employeeButton)
-
-
-        //create hire emp button 
-        let hireCell = row.insertCell()
-        //create hire button
-        let hireButton = document.createElement('input')
-        hireButton.type = "button"
-        hireButton.value = "Hire Employee"
-        hireButton.style = "background-color: green"
-        hireButton.addEventListener('click', () => {
-            let empId = isLoggedIn();
-            if(empId === null) handleSignedoutError()
-
-            if (element.OwnerId != empId) {
-                showError("User does not own business")
-                return
-            }
-
-            //set selected business
-            sessionStorage.setItem("selBus", element.BusId)
-
-            //take to hire employee page
-            location.href = "/hireEmployee"
-
-        })
-        //add button to cell
-        hireCell.appendChild(hireButton)
-    
-       
-    
-        //create delete button cell 
-        let deleteCell = row.insertCell()
-        
-        //create the button
-        let deleteButton = document.createElement('input')
-        deleteButton.type = "button"
-        deleteButton.value = "Delete Business"
-        deleteButton.style = "background-color: red"
-        deleteButton.addEventListener('click', () => {
-            deleteBusiness(element.OwnerId, element.BusId, result => {
-                alert(result)
-                getBusinesses()
-            })
-            
-        })
-
-        //appened to cell
-        deleteCell.appendChild(deleteButton)
-    })
-
-
-    //Add/Replace on document
-    let dataDiv = document.getElementById("dataTable")
-    if(dataDiv.childElementCount) {
-        dataDiv.replaceChild(table, dataDiv.lastChild)
-    }
-    else {
-        dataDiv.appendChild(table)
-    }
-
-
-
-}
 
 //displays all employees in database on site
 async function getAllEmployees() {
-    let result = await fetch('/getAllEmployees', {method: 'post'})
-    let dataReceived = await result.json()
 
-    listEmployees(dataReceived)
+    listEmployees(await fetchServer('/getAllEmployees'))
 
 }
 
@@ -318,8 +197,8 @@ async function deleteBusiness(ownerID, businessID, callback) {
         "business": businessID
     })
     console.log(body)
-    let result = await fetch('/removeBusiness', {method: 'post', headers: {'Content-Type': 'application/json'}, body})
-    let dataReceived = await result.json()
+
+    let dataReceived = await fetchServer('/removeBusines', body)
 
     //Return result message
     dataReceived.requestStatus == "ERROR" ? callback("ERROR: Could not delete business") : callback("SUCCESS: Business deleted")
@@ -330,10 +209,7 @@ async function getBusinessEmployees(businessID, callback) {
     let body = JSON.stringify({
         "busID": businessID
     })
-    let result = await fetch('/getBusinessEmployees', {method: 'post', headers: {'Content-Type': 'application/json'}, body})
-    let dataReceived = await result.json()
-
-    callback(dataReceived)
+    callback(await fetchServer('/getBusinessEmployees', body))
 }
 
 //hires employee with given fields
@@ -344,9 +220,9 @@ async function hireEmployee(form) {
     let body = JSON.stringify({
         "busID": localStorage.getItem("busId")
     })
-    console.log(body)
-    let result = await fetch('/getBusMaxEmpId', {method: 'post', headers: {'Content-Type': 'application/json'}, body})
-    let dataRecieved = await result.json()
+
+    //get max emp id from server 
+    let dataRecieved = await fetchServer('getBysMaxEmpId', body)
 
     newId = dataRecieved.maxID + 1
 
@@ -365,8 +241,8 @@ async function hireEmployee(form) {
         "Salary": document.getElementById("Salary").value
     })
 
-    result = await fetch('/hireNewEmployee', {method: 'post', headers: {'Content-Type': 'application/json'}, body})
-    dataReceived = await result.json()
+    //call server to add new employee
+    dataReceived = await fetchServer('/hireNewEmployee', body)
 
     if(dataRecieved != "ERROR") {
         alert("SUCCESS: Employee Hired")
@@ -379,25 +255,27 @@ async function hireEmployee(form) {
 
 //fires employee with given fields
 async function fireEmployee(body, callback) {
-
-
-    let result = await fetch('/fireEmployee', {method: 'post', headers: {'Content-Type': 'application/json'}, body})
-    let dataReceived = await result.json()
-
+    let dataReceived = await fetchServer('/fireEmployee', body)
     callback(dataReceived.result)
 }
 
 //returns true if provided id is owner of business
 async function verifyIsOwner(busID, empID, callback) {
     let body = JSON.stringify( {"businessID": busID} )
-
-    let result = await fetch('/getBusOwner', {method: 'post', headers: {'Content-Type': 'application/json'}, body})
-    let dataReceived = await result.json()
-    
+    let dataReceived = await fetchServer('/getBusOwner', body)
     dataReceived.result == empID ? callback(true) : callback(false)
-
 }
 
+//displays alrert with error tag
 function showError(msg) {
     alert("ERROR: " + msg)
 }
+
+//fetch server and return data
+async function fetchServer(command, body) {
+    let result = await fetch(command, {method: 'post', headers: {'Content-Type': 'application/json'}, body})
+    let dataReceived = await result.json()
+
+    return dataReceived
+}
+
