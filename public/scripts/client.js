@@ -35,11 +35,11 @@ async function login() {
             "busID": busID
         })
 
-        let result = await fetch('/loginUser', {method: 'post', headers: {'Content-Type': 'application/json'}, body})
-        let dataReceived = await result.json()
+        //call server to login user
+        let result = await fetchServer('/loginUser', body)
 
         //login user
-        if(dataReceived.result) {
+        if(result) {
 
             localStorage.setItem('empId', empID)
             localStorage.setItem('busId', busID)
@@ -404,7 +404,7 @@ function showError(msg) {
 }
 
 //fetch server and return data
-function fetchServer(command, body) {
+async function fetchServer(command, body) {
     let result = await fetch(command, {method: 'post', headers: {'Content-Type': 'application/json'}, body})
     let dataReceived = await result.json()
 
