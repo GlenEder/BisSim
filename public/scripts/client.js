@@ -403,3 +403,11 @@ function showError(msg) {
     alert("ERROR: " + msg)
 }
 
+//fetch server and return data
+function fetchServer(command, body) {
+    let result = await fetch(command, {method: 'post', headers: {'Content-Type': 'application/json'}, body})
+    let dataReceived = await result.json()
+
+    return dataReceived.result
+}
+
