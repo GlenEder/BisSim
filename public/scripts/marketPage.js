@@ -91,8 +91,9 @@ async function displayProducts () {
         let button = document.createElement('input')
         button.type = 'button'
         button.value = 'View Sellers'
+        let prodId = products[p].id
         button.addEventListener('click', () => {
-            displaySellers(products[p].id)
+            displaySellers(prodId)
         })
 
         buttonCell.appendChild(button)
@@ -123,5 +124,57 @@ async function displaySellers(item) {
     let dataReceived = await fetchServer('/findSellers', body)
 
     console.log(dataReceived)
+
+     //TODO display products on table
+    let table = document.createElement('table')
+    let theader = table.createTHead()
+    let headRow = theader.insertRow()
+    let headers = ['Business', 'Quantity on Hand']
+
+    for(var index in headers) {
+        let th = document.createElement('th')
+        let text = document.createTextNode(headers[index])
+        th.appendChild(text)
+        headRow.appendChild(th)
+    }
+
+    //add products to table 
+    for(var b in dataReceived.result ) {
+
+        let row = table.insertRow()
+
+        //add data to row
+        for(var i in headers) {
+            let cell = row.insertCell()
+            let cellText = ""
+            switch(Number(i)){
+                case 0:
+                    cellText = dataReceived.result[b].BusName
+                    break;
+                case 1:
+                    cellText = dataReceived.result[b].CurrentQuantity
+                    break;
+                default:
+                    cellText = "ERROR-NO-DATA"  
+            }
+
+            //add text to cell
+            cell.appendChild(document.createTextNode(cellText))
+        }
+
+    }
+
+
+    //Add table to page
+    let tableDiv = document.getElementById("sellersTable")
+    
+    //remove existing table 
+    if(tableDiv.children.length) {
+        tableDiv.removeChild(tableDiv.lastChild)
+    
+    }
+    
+    tableDiv.appendChild(table)
+
 
 }

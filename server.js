@@ -436,7 +436,11 @@ function getSellersOfItem(item, callback) {
 
     if(serverLogs) console.log("Finding sellers for item(" + item + ")")
 
-    dataCon.query("SELECT * FROM Quantity NATURAL JOIN Business WHERE ItemNum = ?", item, (error, result) => {
+    let query = "SELECT * FROM Quantity INNER JOIN Business ON Quantity.BusId = Business.BusId WHERE ItemNum = \"" + item + "\""
+
+    console.log(query)
+
+    dataCon.query(query, (error, result) => {
         if(error) console.log(error)
         error ? callback(null) : callback(result)
     })
