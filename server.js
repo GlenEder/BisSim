@@ -245,6 +245,13 @@ app.post('/getBusiness', (req, res) => {
     })
 }) 
 
+//Returns products 
+app.post('/getProducts', (req, res) => {
+    getProducts(result => {
+        res.send({"result": result})
+    })
+})
+
 app.listen(port, () => {
     console.log('Express app listening on http://localhost:', port)
 })
