@@ -75,11 +75,9 @@ async function createOwnerShit() {
     })
 
     //call server 
-    let result = await fetchServer('/createOwnerAndBusiness', body)
+    let dataReceived = await fetchServer('/createOwnerAndBusiness', body)
 
-
-    console.log(result)
-    if(result == "SUCCESS") {
+    if(dataReceived.result == "SUCCESS") {
         alert("Creation Successful: Login Creds Below\nEmployee Id: " + dataReceived.emp + "\nBusiness Id: " + dataReceived.bus)
         localStorage.setItem('empId', dataReceived.emp);
         window.location.href = '/home'
@@ -90,124 +88,6 @@ async function createOwnerShit() {
 
 }
 
-//displays all businesses on site
-async function getBusinesses () {
-    //Get business list from server
-    const options = {
-        method: 'POST'
-    }
-    const result = await fetch('/apiGetBusinesses', options)
-    const jsonData = await result.json()
-
-    //create html table for businesses
-    let table = document.createElement('table')
-
-    //create table headers
-    let theader = table.createTHead()
-    let headRow = theader.insertRow()
-    let headers = ['OwnerId', 'BusinessId', 'Business Name', 'Year Founded', 'City', 'State', 'Address']
-    for(var idex in headers) {
-        let th = document.createElement('th')
-        let text = document.createTextNode(headers[idex])
-        th.appendChild(text)
-        headRow.appendChild(th)
-    }
-
-    //Fill table with data
-    jsonData.data.forEach(element => {
-        
-        //create entry row
-        let row = table.insertRow()
-
-        //fill row with data
-        for(var item in element) {
-            let cell = row.insertCell()
-            let text = document.createTextNode(element[item])
-            cell.appendChild(text)
-        }
-
-        //create list employees button
-        let employeeCell = row.insertCell()
-
-        //create button
-        let employeeButton = document.createElement('input')
-        employeeButton.type = "button"
-        employeeButton.value = "Display employees"
-        employeeButton.style = "background-color: green"
-        employeeButton.addEventListener('click', () => {
-            getBusinessEmployees(element.BusId, result => {
-                //console.log(result)
-
-                //create employee list
-                listEmployees(result)
-            })
-        })
-
-        //add to cell
-        employeeCell.appendChild(employeeButton)
-
-
-        //create hire emp button 
-        let hireCell = row.insertCell()
-        //create hire button
-        let hireButton = document.createElement('input')
-        hireButton.type = "button"
-        hireButton.value = "Hire Employee"
-        hireButton.style = "background-color: green"
-        hireButton.addEventListener('click', () => {
-            let empId = isLoggedIn();
-            if(empId === null) handleSignedoutError()
-
-            if (element.OwnerId != empId) {
-                showError("User does not own business")
-                return
-            }
-
-            //set selected business
-            sessionStorage.setItem("selBus", element.BusId)
-
-            //take to hire employee page
-            location.href = "/hireEmployee"
-
-        })
-        //add button to cell
-        hireCell.appendChild(hireButton)
-    
-       
-    
-        //create delete button cell 
-        let deleteCell = row.insertCell()
-        
-        //create the button
-        let deleteButton = document.createElement('input')
-        deleteButton.type = "button"
-        deleteButton.value = "Delete Business"
-        deleteButton.style = "background-color: red"
-        deleteButton.addEventListener('click', () => {
-            deleteBusiness(element.OwnerId, element.BusId, result => {
-                alert(result)
-                getBusinesses()
-            })
-            
-        })
-
-        //appened to cell
-        deleteCell.appendChild(deleteButton)
-    })
-
-
-    //Add/Replace on document
-    let dataDiv = document.getElementById("dataTable")
-    if(dataDiv.childElementCount) {
-        dataDiv.replaceChild(table, dataDiv.lastChild)
-    }
-    else {
-        dataDiv.appendChild(table)
-    }
-
-
-
-}
 
 //displays all employees in database on site
 async function getAllEmployees() {
