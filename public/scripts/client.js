@@ -197,8 +197,8 @@ async function deleteBusiness(ownerID, businessID, callback) {
         "business": businessID
     })
     console.log(body)
-    let result = await fetch('/removeBusiness', {method: 'post', headers: {'Content-Type': 'application/json'}, body})
-    let dataReceived = await result.json()
+
+    let dataReceived = await fetchServer('/removeBusines', body)
 
     //Return result message
     dataReceived.requestStatus == "ERROR" ? callback("ERROR: Could not delete business") : callback("SUCCESS: Business deleted")
@@ -209,10 +209,7 @@ async function getBusinessEmployees(businessID, callback) {
     let body = JSON.stringify({
         "busID": businessID
     })
-    let result = await fetch('/getBusinessEmployees', {method: 'post', headers: {'Content-Type': 'application/json'}, body})
-    let dataReceived = await result.json()
-
-    callback(dataReceived)
+    callback(await fetchServer('/getBusinessEmployees', body))
 }
 
 //hires employee with given fields
