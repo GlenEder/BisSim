@@ -92,7 +92,7 @@ async function displayProducts () {
         button.type = 'button'
         button.value = 'View Sellers'
         button.addEventListener('click', () => {
-            alert("Button Pressed")
+            displaySellers(products[p].id)
         })
 
         buttonCell.appendChild(button)
@@ -114,5 +114,14 @@ async function displayProducts () {
     
     //allow changing of sorting
     loadingTable = false
+}
+
+//displays businesses that sell the provided item id
+function displaySellers(item) {
+
+    let body = JSON.stringify({item: item})
+    let dataReceived = fetchServer('/findSellers', body)
+
+    console.log(dataReceived)
 
 }
