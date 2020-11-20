@@ -1,11 +1,12 @@
-
-
+//set onload for document
+window.addEventListener('load', displayProducts)
 
 //Display available products on table 
-function displayProducts () {
+async function displayProducts () {
 
-    //TODO query server for products
-    let dataReceived = fetchServer('/getProducts', null)
+    //call server for products 
+    let dataReceived = await fetchServer('/getProducts', null)
+    
 
     //TODO display products on table
 

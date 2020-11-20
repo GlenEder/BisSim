@@ -398,3 +398,12 @@ function getOwnerId(business, callback) {
         error ? callback("ERROR") : callback(result[0].OwnerId)
     })
 }
+
+//Returns products in database 
+function getProducts(callback) {
+    if(serverLogs) console.log("Querying for products")
+    dataCon.query("SELECT * FROM Items", (error, result) => {
+        if(error) console.log(error)
+        error ? callback(null) : callback(result) 
+    })
+}
