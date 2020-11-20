@@ -18,6 +18,9 @@ function changeSorting(orderBy) {
         currentlyDesc = false
     }
 
+    //reset current products 
+    products = []
+
     displayProducts()
 
 }
@@ -33,7 +36,6 @@ async function displayProducts () {
     let dataReceived = await fetchServer('/getProducts', body)
 
     let items = dataReceived.result
-    console.log(items)
     for(let i = 0; i < items.length; i++) {
         products.push(new Product(items[i]))
     }
