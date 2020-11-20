@@ -91,10 +91,8 @@ async function createOwnerShit() {
 
 //displays all employees in database on site
 async function getAllEmployees() {
-    let result = await fetch('/getAllEmployees', {method: 'post'})
-    let dataReceived = await result.json()
 
-    listEmployees(dataReceived)
+    listEmployees(await fetchServer('/getAllEmployees'))
 
 }
 
