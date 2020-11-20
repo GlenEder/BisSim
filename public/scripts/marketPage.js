@@ -29,6 +29,34 @@ async function displayProducts () {
         headRow.appendChild(th)
     }
 
+    //add products to table 
+    for(var p in products) {
+
+        let row = table.insertRow()
+
+        //add data to row
+        for(var i in headers) {
+            let cell = row.insertCell()
+            let cellText = ""
+            switch(Number(i)){
+                case 0:
+                    cellText = products[p].id
+                    break;
+                case 1:
+                    cellText = products[p].name
+                    break;
+                case 2:
+                    cellText = products[p].brand
+                    break;
+                default:
+                    cellText = "ERROR-NO-DATA"  
+            }
+
+            //add text to cell
+            cell.appendChild(document.createTextNode(cellText))
+        }
+
+    }
 
 
     //Add table to page
