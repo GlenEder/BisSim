@@ -187,5 +187,4 @@ async function displaySellers(item) {
     
     tableDiv.appendChild(table)
 
-
 }
