@@ -6,9 +6,14 @@ let products = []
 
 let currentOrder = "ItemNum"
 let currentlyDesc = false
+let loadingTable = true
 
 //change sorting 
 function changeSorting(orderBy) {
+
+    //prevent double tables 
+    if(loadingTable) return
+    loadingTable = true
 
     if(currentOrder == orderBy) {
         currentlyDesc = !currentlyDesc
@@ -95,5 +100,7 @@ async function displayProducts () {
     
     tableDiv.appendChild(table)
     
+    //allow changing of sorting
+    loadingTable = false
 
 }
