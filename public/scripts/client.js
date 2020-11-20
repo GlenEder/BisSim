@@ -220,9 +220,9 @@ async function hireEmployee(form) {
     let body = JSON.stringify({
         "busID": localStorage.getItem("busId")
     })
-    console.log(body)
-    let result = await fetch('/getBusMaxEmpId', {method: 'post', headers: {'Content-Type': 'application/json'}, body})
-    let dataRecieved = await result.json()
+
+    //get max emp id from server 
+    let dataRecieved = await fetchServer('getBysMaxEmpId', body)
 
     newId = dataRecieved.maxID + 1
 
@@ -241,8 +241,8 @@ async function hireEmployee(form) {
         "Salary": document.getElementById("Salary").value
     })
 
-    result = await fetch('/hireNewEmployee', {method: 'post', headers: {'Content-Type': 'application/json'}, body})
-    dataReceived = await result.json()
+    //call server to add new employee
+    dataReceived = await fetchServer('/hireNewEmployee', body)
 
     if(dataRecieved != "ERROR") {
         alert("SUCCESS: Employee Hired")
@@ -255,23 +255,15 @@ async function hireEmployee(form) {
 
 //fires employee with given fields
 async function fireEmployee(body, callback) {
-
-
-    let result = await fetch('/fireEmployee', {method: 'post', headers: {'Content-Type': 'application/json'}, body})
-    let dataReceived = await result.json()
-
+    let dataReceived = await fetchServer('/fireEmployee', body)
     callback(dataReceived.result)
 }
 
 //returns true if provided id is owner of business
 async function verifyIsOwner(busID, empID, callback) {
     let body = JSON.stringify( {"businessID": busID} )
-
-    let result = await fetch('/getBusOwner', {method: 'post', headers: {'Content-Type': 'application/json'}, body})
-    let dataReceived = await result.json()
-    
+    let dataReceived = await fetchServer('/getBusOwner', body)
     dataReceived.result == empID ? callback(true) : callback(false)
-
 }
 
 //displays alrert with error tag
