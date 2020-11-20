@@ -86,6 +86,18 @@ async function displayProducts () {
             cell.appendChild(document.createTextNode(cellText))
         }
 
+        //add find sellers button 
+        let buttonCell = row.insertCell()
+        let button = document.createElement('input')
+        button.type = 'button'
+        button.value = 'View Sellers'
+        button.addEventListener('click', () => {
+            alert("Button Pressed")
+        })
+
+        buttonCell.appendChild(button)
+        
+
     }
 
 
