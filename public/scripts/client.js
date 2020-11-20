@@ -36,10 +36,10 @@ async function login() {
         })
 
         //call server to login user
-        let result = await fetchServer('/loginUser', body)
+        let dataReceived = await fetchServer('/loginUser', body)
 
         //login user
-        if(result) {
+        if(dataReceived.result) {
 
             localStorage.setItem('empId', empID)
             localStorage.setItem('busId', busID)
@@ -74,11 +74,12 @@ async function createOwnerShit() {
         "State": document.getElementById("State").value
     })
 
-    let result = await fetch('/createOwnerAndBusiness', {method: 'post', headers: {'Content-Type': 'application/json'}, body})
-    let dataReceived = await result.json()
+    //call server 
+    let result = await fetchServer('/createOwnerAndBusiness', body)
 
-    console.log(dataReceived)
-    if(dataReceived.result == "SUCCESS") {
+
+    console.log(result)
+    if(result == "SUCCESS") {
         alert("Creation Successful: Login Creds Below\nEmployee Id: " + dataReceived.emp + "\nBusiness Id: " + dataReceived.bus)
         localStorage.setItem('empId', dataReceived.emp);
         window.location.href = '/home'
@@ -408,6 +409,6 @@ async function fetchServer(command, body) {
     let result = await fetch(command, {method: 'post', headers: {'Content-Type': 'application/json'}, body})
     let dataReceived = await result.json()
 
-    return dataReceived.result
+    return dataReceived
 }
 
