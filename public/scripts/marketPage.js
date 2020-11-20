@@ -1,16 +1,23 @@
 //set onload for document
-window.addEventListener('load', displayProducts)
+window.addEventListener('load', firstDisplay)
 
 //available products 
 let products = []
 
+//change sorting 
+
+
+function firstDisplay () {
+    displayProducts("ItemNum", true)
+}
+
 //Display available products on table 
-async function displayProducts () {
+async function displayProducts (order, desc) {
 
     //call server for products 
     let body = JSON.stringify({
-        orderBy: 'Brand',
-        desc: false
+        orderBy: order,
+        desc: desc
     })
     let dataReceived = await fetchServer('/getProducts', body)
 
