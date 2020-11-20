@@ -61,6 +61,17 @@ app.get('/hireEmployee', (req, res) => {
     res.sendFile('hireEmployee.html', {root: __dirname + '/public'})
 })
 
+//send market page
+app.get('/market', (req, res) => {
+    res.sendFile('/market.html', {root: __dirname + '/public'})
+})
+
+
+////////////////////
+///POST CALSS//////
+/////////////////
+
+
 //returns employees in selected business 
 app.post('/getBusinessEmployees', (req, res) => {
     const data = req.body
@@ -219,12 +230,20 @@ app.post('/fireEmployee', (req, res) => {
 
 })
 
+//Returns owner id of provided business
 app.post('/getBusOwner', (req, res) => {
     let busID = req.body.businessID
     getOwnerId(busID, result => {
         res.send({"result": result})
     })
 })
+
+//Returns business object of provided business id
+app.post('/getBusiness', (req, res) => {
+    getBusines(req.body.businessID, result => {
+        res.send({"result": result})
+    })
+}) 
 
 app.listen(port, () => {
     console.log('Express app listening on http://localhost:', port)
@@ -248,6 +267,15 @@ app.listen(port, () => {
 /*===================
 ===Query functions===
 ====================*/
+
+//Returns the business object of provided business id
+function getBusines(businessID, callback) {
+    if(serverLogs) console.log("Retreving business(" + businessID + ")")
+    dataCon.query("SELECT * FROM Business WHERE BusId = ?", businessID, (error, result) => {
+        if(error) console.log(error)
+        error ? callback(null) : callback(result[0])
+    })
+}
 
 //Returns all business in database 
 function getAllBusinesses(callback) {

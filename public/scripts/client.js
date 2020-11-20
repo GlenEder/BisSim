@@ -40,15 +40,17 @@ async function login() {
 
         //login user
         if(dataReceived.result) {
+
             localStorage.setItem('empId', empID)
+            localStorage.setItem('busId', busID)
             location.href = '/home'
         }
         else {
-            alert("ERROR: Employee Does Not Exist")
+            showError("Employee does not exist")
         }
     }
     else {
-        alert("ERROR: Enter Name and Employee ID")
+        showError("Invalid login parameters")
     }
 }
 
@@ -78,6 +80,7 @@ async function createOwnerShit() {
     console.log(dataReceived)
     if(dataReceived.result == "SUCCESS") {
         alert("Creation Successful: Login Creds Below\nEmployee Id: " + dataReceived.emp + "\nBusiness Id: " + dataReceived.bus)
+        localStorage.setItem('empId', dataReceived.emp);
         window.location.href = '/home'
     }
     else {
@@ -247,6 +250,13 @@ function listEmployees(data) {
             cell.appendChild(text)
         }
 
+        let eId = data[index].EmpId
+        let bId = data[index].BusId
+
+        //skip fire button if owner
+        if(eId == localStorage.getItem('empId')) continue
+        
+
         //add fire button cell
         let fireCell = row.insertCell()
         let fireButton = document.createElement("input")
@@ -254,14 +264,10 @@ function listEmployees(data) {
         fireButton.value = "Fire Employee"
         fireButton.style = "background-color: red"
         
-        let eId = data[index].EmpId
-        let bId = data[index].BusId
+        
 
         fireButton.addEventListener('click', () => {
-            //check that user is owner
-            verifyIsOwner(bId, eId, isOwner => {
-                if(!isOwner) showError("User not owner of business")
-
+           
                 let body = JSON.stringify({
                     "EmpId": eId,
                     "BusId": bId
@@ -276,7 +282,6 @@ function listEmployees(data) {
                         showError("Failed to fire employee")
                     }
                 })
-            })
         })
         //add fire button
         fireCell.appendChild(fireButton)
@@ -284,7 +289,7 @@ function listEmployees(data) {
     }
 
     //Add/Replace on document
-    let empDiv = document.getElementById("employeeTable")
+    let empDiv = document.getElementById("dataTable")
     if(empDiv.childElementCount) {
         empDiv.replaceChild(table, empDiv.lastChild)
     }
@@ -337,7 +342,7 @@ async function hireEmployee(form) {
     //assign employee id
     let newId = -1
     let body = JSON.stringify({
-        "busID": sessionStorage.getItem("selBus")
+        "busID": localStorage.getItem("busId")
     })
     console.log(body)
     let result = await fetch('/getBusMaxEmpId', {method: 'post', headers: {'Content-Type': 'application/json'}, body})
@@ -365,7 +370,7 @@ async function hireEmployee(form) {
 
     if(dataRecieved != "ERROR") {
         alert("SUCCESS: Employee Hired")
-        location.href = '/'
+        location.href = '/homePage'
     }
     else {
         alert("ERROR: Failed to Hire Employee")
@@ -384,9 +389,7 @@ async function fireEmployee(body, callback) {
 
 //returns true if provided id is owner of business
 async function verifyIsOwner(busID, empID, callback) {
-    let body = JSON.stringify( {
-        "businessID": busID
-    })
+    let body = JSON.stringify( {"businessID": busID} )
 
     let result = await fetch('/getBusOwner', {method: 'post', headers: {'Content-Type': 'application/json'}, body})
     let dataReceived = await result.json()

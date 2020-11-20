@@ -1,0 +1,25 @@
+
+#workplace {
+    overflow: hidden;
+    width: 100%;
+}
+
+#dataTable {
+    margin-left: 15%;
+}
+
+#selector {
+    overflow: hidden;
+    float: left;
+    width: 12%;
+    margin-right: 2%;
+}
+
+#selector:after {
+    display: block;
+}
+
+#selector input {
+    display: block;
+    width: 100%;
+} 

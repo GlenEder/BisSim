@@ -2,20 +2,28 @@
 <html>
 <head>
     <meta charset="UTF-8" />
-    <script src="client.js"></script>
+    <script src="scripts/client.js"></script>
+    <script src="scripts/homePage.js"></script>
+    <script src="objects/business.js"></script>
+    <link rel="stylesheet" href="styles/homePage.css" />
 </head>
 <body>
-    <h1>BisSim</h1>
-    <h2 id="loginHUD">Logged in as Employee: </h2>
+    <h1 id="businessName">BisSim</h1>
+    <div id="workspace">
+        <div id="selector">
+            <input type="button" value="View Employees" onclick="viewEmployees()"/>
+            <input type="button" value="Hire Employee" onclick="location.href='/hireEmployee'" />
+            <input type="button" value="View Inventory" />
+            <input type="button" value="Buy Product" onclick="location.href='/market'"/>
+            <input type="button" value="Logout" onclick="location.href='/'" />
+            <input type="button" value="Delete Business" onclick="confirmBusinessDelete()" />
+        </div>
+        <div id="dataTable">
+            
+        </div>
+    </div>
+    
 
-    
-    <input id="createBusiness" type="button" value="Create A New Business" onclick="location.href='/createBusiness'" />
-    <input id="getBusinesses" type="button" value="List Businesses" onclick="getBusinesses();" />
-    <input id="showAllEmps" type="button" value="List All Employees" onclick="getAllEmployees()" />
-    <div id="dataTable"></div>
-    
-    <br/>
-    <div id="employeeTable"></div>
 </body> 
 
 </html>
