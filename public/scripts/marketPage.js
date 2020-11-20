@@ -8,9 +8,14 @@ let products = []
 async function displayProducts () {
 
     //call server for products 
-    let dataReceived = await fetchServer('/getProducts', null)
-    
+    let body = JSON.stringify({
+        orderBy: 'Brand',
+        desc: false
+    })
+    let dataReceived = await fetchServer('/getProducts', body)
+
     let items = dataReceived.result
+    console.log(items)
     for(let i = 0; i < items.length; i++) {
         products.push(new Product(items[i]))
     }

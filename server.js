@@ -247,7 +247,11 @@ app.post('/getBusiness', (req, res) => {
 
 //Returns products 
 app.post('/getProducts', (req, res) => {
-    getProducts(result => {
+
+    let orderBy = req.body.orderBy
+    let desc = req.body.desc
+
+    getProducts(orderBy, desc, result => {
         res.send({"result": result})
     })
 })
@@ -399,11 +403,26 @@ function getOwnerId(business, callback) {
     })
 }
 
-//Returns products in database 
-function getProducts(callback) {
-    if(serverLogs) console.log("Querying for products")
-    dataCon.query("SELECT * FROM Items", (error, result) => {
-        if(error) console.log(error)
-        error ? callback(null) : callback(result) 
-    })
+//Returns products in database in ordered fashion
+//pass decending as false to order by ascending  
+function getProducts(orderby, decending, callback) {
+    if(serverLogs) console.log("Querying for products ordered by " + orderby + ", desc: " + decending)
+
+    let query = "SELECT * FROM Items ORDER BY " + orderby
+    decending ? query += " DESC" : query += " ASC"
+
+    if(decending) {
+        dataCon.query(query, (error, result) => {
+            if(error) console.log(error)
+            error ? callback(null) : callback(result) 
+        })
+    }
+    else {
+        dataCon.query(query, (error, result) => {
+            if(error) console.log(error)
+            error ? callback(null) : callback(result) 
+        })
+    }
+
+   
 }
