@@ -398,6 +398,8 @@ async function verifyIsOwner(busID, empID, callback) {
 
 }
 
+//displays alrert with error tag
 function showError(msg) {
     alert("ERROR: " + msg)
 }
+
