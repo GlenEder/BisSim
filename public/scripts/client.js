@@ -222,7 +222,7 @@ async function hireEmployee(form) {
     })
 
     //get max emp id from server 
-    let dataRecieved = await fetchServer('getBysMaxEmpId', body)
+    let dataRecieved = await fetchServer('getBusMaxEmpId', body)
 
     newId = dataRecieved.maxID + 1
 
@@ -234,7 +234,7 @@ async function hireEmployee(form) {
 
     body = JSON.stringify({
         "EmpId": newId,
-        "BusId": sessionStorage.getItem("selBus"),
+        "BusId": localStorage.getItem("busId"),
         "Name": document.getElementById("Name").value.trim(),
         "BirthYear": document.getElementById("Birth").value,
         "position": document.getElementById("Pos").value.trim(),
@@ -246,11 +246,12 @@ async function hireEmployee(form) {
 
     if(dataRecieved != "ERROR") {
         alert("SUCCESS: Employee Hired")
-        location.href = '/homePage'
     }
     else {
         alert("ERROR: Failed to Hire Employee")
     }
+
+    location.href = '/home'
 }
 
 //fires employee with given fields
