@@ -438,8 +438,6 @@ function getSellersOfItem(item, callback) {
 
     let query = "SELECT * FROM Quantity INNER JOIN Business ON Quantity.BusId = Business.BusId WHERE ItemNum = \"" + item + "\""
 
-    console.log(query)
-
     dataCon.query(query, (error, result) => {
         if(error) console.log(error)
         error ? callback(null) : callback(result)
