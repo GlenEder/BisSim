@@ -175,6 +175,7 @@ async function displaySellers(item) {
         button.value = 'Buy Product From This Seller'
 
         button.addEventListener('click', () => {
+            //add buiness id and item id to param 
             const uri = "/purchase?bus=" + businessID + "&item=" + itemID
             const encoded = encodeURI(uri)
         
