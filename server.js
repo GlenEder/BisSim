@@ -66,10 +66,15 @@ app.get('/market', (req, res) => {
     res.sendFile('/market.html', {root: __dirname + '/public'})
 })
 
+//send purchase page
+app.get('/purchase', (req, res) => {
+    res.sendFile('/purchase.html', {root: __dirname + '/public'})
+})
 
-////////////////////
-///POST CALSS//////
-/////////////////
+
+  //////////////////
+ ////POST CALLS////
+//////////////////
 
 
 //returns employees in selected business 
