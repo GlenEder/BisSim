@@ -143,16 +143,22 @@ async function displaySellers(item) {
 
         let row = table.insertRow()
 
+        //Data for row 
+        let businessID = dataReceived.result[b].BusId
+        let businessName = dataReceived.result[b].BusName
+        let amountOnHand = dataReceived.result[b].CurrentQuantity
+        let itemID = dataReceived.result[b].ItemNum
+
         //add data to row
         for(var i in headers) {
             let cell = row.insertCell()
             let cellText = ""
             switch(Number(i)){
                 case 0:
-                    cellText = dataReceived.result[b].BusName
+                    cellText = businessName
                     break;
                 case 1:
-                    cellText = dataReceived.result[b].CurrentQuantity
+                    cellText = amountOnHand
                     break;
                 default:
                     cellText = "ERROR-NO-DATA"  
@@ -167,8 +173,12 @@ async function displaySellers(item) {
         let button = document.createElement('input')
         button.type = 'button'
         button.value = 'Buy Product From This Seller'
+
         button.addEventListener('click', () => {
-            alert("TODO purchase page")
+            const uri = "/purchase?bus=" + businessID + "&item=" + itemID
+            const encoded = encodeURI(uri)
+        
+            location.href = encoded
         })
 
         buttonCell.appendChild(button)
