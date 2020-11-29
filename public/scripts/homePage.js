@@ -90,6 +90,27 @@ function confirmBusinessDelete () {
     }
 }
 
+//Displays employees and employee selector
+async function fireEmployee () {
+  
+    //get selector 
+    let selector = document.getElementById("employeeSelect")
+
+    //fill selector
+    currentBusiness.getEmployees(result => {
+        for(var index in result) {
+            let option = document.createElement("option")
+            option.text = result[index].Name + " (" + result[index].EmpId + ")"
+            selector.add(option)
+        }
+
+        //show selector
+        document.getElementById("fireBlock").style.display = "block"
+    })
+
+    
+}
+
 
 //Displays given data in table on site with headers provided
 //@param data -- array of objects 
