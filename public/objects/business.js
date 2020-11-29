@@ -11,6 +11,13 @@ class Business {
         this.address = databaseBusinessObject.Address
     }
 
+    async getEmployees(callback) {
+        let body = JSON.stringify({
+            "busID": this.id
+        })
+        callback(await fetchServer('/getBusinessEmployees', body))
+    }
+
     //Calls server to fire an employee
     async fireEmployee(body, callback) {
         let dataReceived = await fetchServer('/fireEmployee', body)
@@ -57,5 +64,18 @@ class Business {
         }
 
         location.href = '/home'
+    }
+
+    //Calls server to delete itself
+    async delete(callback) {
+        let body = JSON.stringify({
+            "owner": this.owner,
+            "business": this.id
+        })
+    
+        let dataReceived = await fetchServer('/removeBusiness', body)
+    
+        //Return result message
+        dataReceived.requestStatus == "ERROR" ? callback("ERROR: Could not delete business") : callback("SUCCESS: Business deleted")    
     }
 }

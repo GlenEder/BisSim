@@ -41,7 +41,7 @@ async function handleHire(form) {
 
 //renders employee table on home page
 async function viewEmployees () {
-    getBusinessEmployees(currentBusiness.id, result => {
+    currentBusiness.getEmployees(result => {
         listEmployees(result)
     })
 }
@@ -49,7 +49,7 @@ async function viewEmployees () {
 //confirms deletion of business
 function confirmBusinessDelete () {
     if(confirm("Press OK to continue with deletion.\nThis will remove all employees including the owner.")) {
-        deleteBusiness(localStorage.getItem('empId'), currentBusiness.id, result => {
+        currentBusiness.delete(result => {
             alert(result);
             if(result.includes("SUCCESS")) { location.href = '/'}
         })
