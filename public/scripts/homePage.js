@@ -4,6 +4,9 @@ window.addEventListener('load', loadBusiness)
 //current business of user
 let currentBusiness = null
 
+//if user is viewing employees
+let employeeTableVisable = false
+
 //loads data from server about current business
 async function loadBusiness () {
     //get current business 
@@ -58,11 +61,14 @@ async function viewInventory () {
 
         displayDataInTable(result, headers)
 
+        employeeTableVisable = false
+
     })
 }
 
 //renders employee table on home page
 async function viewEmployees () {
+
     currentBusiness.getEmployees(result => {
 
         //create headers for table
@@ -77,6 +83,8 @@ async function viewEmployees () {
 
         //display data on site
         displayDataInTable(result, headers)
+
+        employeeTableVisable = true
     })
 }
 
@@ -89,6 +97,46 @@ function confirmBusinessDelete () {
         })
     }
 }
+
+//Displays employees and employee selector
+async function showFireEmployee () {
+  
+    //get selector 
+    let selector = document.getElementById("employeeSelect")
+
+    //fill selector
+    currentBusiness.getEmployees(result => {
+        for(var index in result) {
+            let option = document.createElement("option")
+            option.text = result[index].Name + " (" + result[index].EmpId + ")"
+            selector.add(option)
+        }
+
+        //show selector
+        document.getElementById("fireBlock").style.display = "block"
+    })
+}
+
+//Gets id from selector and fires employee
+async function fireEmployee () {
+
+    //get id from selector
+    let employee = document.getElementById("employeeSelect").value
+    let id = employee.substring(employee.indexOf("(") + 1, employee.length - 1)
+
+    currentBusiness.fireEmployee(id, result => {
+        alert(result)
+        if(result == "SUCCESS") {
+            document.getElementById("fireBlock").style.display = "none"
+            if(employeeTableVisable) {
+                viewEmployees()
+            }
+        }
+    })
+
+}
+
+
 
 
 //Displays given data in table on site with headers provided
