@@ -67,7 +67,19 @@ async function viewInventory () {
 //renders employee table on home page
 async function viewEmployees () {
     currentBusiness.getEmployees(result => {
-        listEmployees(result)
+        
+        //create headers for table
+        let headers = [
+            'EmployeeId', 
+            'BusinessId', 
+            'Name', 
+            'Birth Date', 
+            'Position', 
+            'Salary'
+        ]
+
+        //display data on site
+        displayDataInTable(result, headers)
     })
 }
 
@@ -117,30 +129,7 @@ function listEmployees(data) {
 
         //add fire button cell
         let fireCell = row.insertCell()
-        let fireButton = document.createElement("input")
-        fireButton.type = "button"
-        fireButton.value = "Fire Employee"
-        fireButton.style = "background-color: red"
         
-        
-
-        fireButton.addEventListener('click', () => {
-           
-                let body = JSON.stringify({
-                    "EmpId": eId,
-                    "BusId": bId
-                })
-    
-                currentBusiness.fireEmployee(body, result => {
-                    if(result == "SUCCESS") {
-                        alert("Employee Fired")
-                        viewEmployees()
-                    }
-                    else {
-                        showError("Failed to fire employee")
-                    }
-                })
-        })
         //add fire button
         fireCell.appendChild(fireButton)
     
@@ -160,7 +149,7 @@ function listEmployees(data) {
 //@param data -- array of objects 
 //@param headers -- array of strings to label columns 
 //@param rowExtras -- html elements to add to each row at end 
-function displayDataInTable(data, headers, rowExtras) {
+function displayDataInTable(data, headers) {
 
     console.log(data)
 
@@ -185,12 +174,6 @@ function displayDataInTable(data, headers, rowExtras) {
             let cell = row.insertCell()
             let text = document.createTextNode(data[index][item])
             cell.appendChild(text)
-        }
-
-        //Add row extras 
-        for(var extra in rowExtras) {
-            let cell = row.insertCell()
-            cell.appendChild(extra)
         }
 
     }
