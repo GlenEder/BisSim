@@ -39,11 +39,6 @@ async function handleHire(form) {
     currentBusiness.hireEmployee(form);
 }
 
-//Calls fire employee with current business
-async function handlFire(body, callback) {
-    currentBusiness.fireEmployee(body, callback)
-}
-
 //renders employee table on home page
 async function viewEmployees () {
     getBusinessEmployees(currentBusiness.id, result => {
@@ -116,7 +111,7 @@ function listEmployees(data) {
                 currentBusiness.fireEmployee(body, result => {
                     if(result == "SUCCESS") {
                         alert("Employee Fired")
-                        location.href = "/home"
+                        viewEmployees()
                     }
                     else {
                         showError("Failed to fire employee")
