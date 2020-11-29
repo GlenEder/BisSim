@@ -270,8 +270,9 @@ app.post('/findSellers', (req, res) => {
 })
 
 app.post('/getBusinessInventory', (req, res) => {
-    console.log(req)
-    res.send({"result": "TESTING"})
+    getBusinessInventory(req.body.business, result => {
+        res.send({"result": result})
+    })
 })
 
 app.listen(port, () => {
