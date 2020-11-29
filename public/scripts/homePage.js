@@ -1,9 +1,10 @@
 //set onload for document
 window.addEventListener('load', loadBusiness)
 
-
+//current business of user
 let currentBusiness = null
 
+//loads data from server about current business
 async function loadBusiness () {
     //get current business 
     let bId = localStorage.getItem('busId')
@@ -34,6 +35,7 @@ function displayBusinessName () {
 }
 
 async function handleHire(form) {
+    console.log(currentBusiness)
     currentBusiness.hireEmployee(form);
 }
 
