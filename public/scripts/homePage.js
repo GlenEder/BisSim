@@ -91,7 +91,7 @@ function confirmBusinessDelete () {
 }
 
 //Displays employees and employee selector
-async function fireEmployee () {
+async function showFireEmployee () {
   
     //get selector 
     let selector = document.getElementById("employeeSelect")
@@ -108,8 +108,10 @@ async function fireEmployee () {
         document.getElementById("fireBlock").style.display = "block"
     })
 
-    
+
 }
+
+
 
 
 //Displays given data in table on site with headers provided
