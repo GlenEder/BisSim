@@ -107,7 +107,16 @@ async function showFireEmployee () {
         //show selector
         document.getElementById("fireBlock").style.display = "block"
     })
+}
 
+//Gets id from selector and fires employee
+async function fireEmployee () {
+
+    //get id from selector
+    let employee = document.getElementById("employeeSelect").value
+    let id = employee.substring(employee.indexOf("(") + 1, employee.length - 1)
+
+    console.log(id)
 
 }
 
