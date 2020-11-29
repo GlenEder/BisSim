@@ -151,6 +151,9 @@ function listEmployees(data) {
 }
 
 //Displays given data in table on site with headers provided
+//@param data -- array of objects 
+//@param headers -- array of strings to label columns 
+//@param rowExtras -- html elements to add to each row at end 
 function displayDataInTable(data, headers, rowExtras) {
 
     console.log(data)
