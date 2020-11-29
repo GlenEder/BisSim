@@ -43,6 +43,18 @@ async function handleHire (form) {
 async function viewInventory () {
     currentBusiness.getInventory(result => {
         console.log("Iventory:", result)
+
+        let headers = [
+            "Brand",
+            "Business Id",
+            "Current Quantity",
+            "Product Name",
+            "Product Id",
+            "Product Type"
+        ]
+
+        displayDataInTable(result, headers)
+
     })
 }
 
@@ -63,7 +75,7 @@ function confirmBusinessDelete () {
     }
 }
 
-//creats list of employees with given employee array 
+//creates list of employees with given employee array 
 function listEmployees(data) {
 
     let table = document.createElement('table')
@@ -136,4 +148,51 @@ function listEmployees(data) {
     else {
         empDiv.appendChild(table)
     }
+}
+
+//Displays given data in table on site with headers provided
+function displayDataInTable(data, headers, rowExtras) {
+
+    console.log(data)
+
+    let table = document.createElement('table')
+    //create table headers
+    let theader = table.createTHead()
+    let headRow = theader.insertRow()
+    for(var idex in headers) {
+        let th = document.createElement('th')
+        let text = document.createTextNode(headers[idex])
+        th.appendChild(text)
+        headRow.appendChild(th)
+    }
+
+    for(var index in data) {
+        //console.log(data[index])
+        //create entry row
+        let row = table.insertRow()
+
+        //fill row with data
+        for(var item in data[index]) {
+            let cell = row.insertCell()
+            let text = document.createTextNode(data[index][item])
+            cell.appendChild(text)
+        }
+
+        //Add row extras 
+        for(var extra in rowExtras) {
+            let cell = row.insertCell()
+            cell.appendChild(extra)
+        }
+
+    }
+
+    //Add/Replace on document
+    let dataDiv = document.getElementById("dataTable")
+    if(dataDiv.childElementCount) {
+        dataDiv.replaceChild(table, dataDiv.lastChild)
+    }
+    else {
+        dataDiv.appendChild(table)
+    }
+
 }

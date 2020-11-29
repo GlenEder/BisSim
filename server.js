@@ -271,7 +271,7 @@ app.post('/findSellers', (req, res) => {
 
 app.post('/getBusinessInventory', (req, res) => {
     getBusinessInventory(req.body.business, result => {
-        res.send({"result": result})
+        res.send(result)
     })
 })
 
