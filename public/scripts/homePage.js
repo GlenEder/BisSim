@@ -116,7 +116,9 @@ async function fireEmployee () {
     let employee = document.getElementById("employeeSelect").value
     let id = employee.substring(employee.indexOf("(") + 1, employee.length - 1)
 
-    console.log(id)
+    currentBusiness.fireEmployee(id, result => {
+        alert(result)
+    })
 
 }
 

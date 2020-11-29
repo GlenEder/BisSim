@@ -19,7 +19,11 @@ class Business {
     }
 
     //Calls server to fire an employee
-    async fireEmployee(body, callback) {
+    async fireEmployee(employeeID, callback) {
+        let body = JSON.stringify({
+            EmpId: employeeID,
+            BusId: this.id
+        })
         let dataReceived = await fetchServer('/fireEmployee', body)
         callback(dataReceived.result)
     } 
