@@ -11,10 +11,8 @@ class Business {
         this.address = databaseBusinessObject.Address
     }
 
+    //Calls server to remove employee from business in database
     async hireEmployee(form) {
-
-        console.log(form)
-        return
 
         //assign employee id
         let newId = -1
@@ -23,9 +21,9 @@ class Business {
         })
 
         //get max emp id from server 
-        let dataRecieved = await fetchServer('getBusMaxEmpId', body)
+        let dataReceived = await fetchServer('getBusMaxEmpId', body)
 
-        newId = dataRecieved.maxID + 1
+        newId = dataReceived.maxID + 1
 
         //check for error in query 
         if(newId < 1) {
@@ -35,17 +33,17 @@ class Business {
 
         body = JSON.stringify({
             "EmpId": newId,
-            "BusId": localStorage.getItem("busId"),
-            "Name": document.getElementById("Name").value.trim(),
-            "BirthYear": document.getElementById("Birth").value,
-            "position": document.getElementById("Pos").value.trim(),
-            "Salary": document.getElementById("Salary").value
+            "BusId": this.id,
+            "Name": form.elements["Name"].value.trim(),
+            "BirthYear": form.elements["Birth"].value,
+            "position": form.elements["Pos"].value.trim(),
+            "Salary": form.elements["Salary"].value
         })
 
         //call server to add new employee
         dataReceived = await fetchServer('/hireNewEmployee', body)
 
-        if(dataRecieved != "ERROR") {
+        if(dataReceived != "ERROR") {
             alert("SUCCESS: Employee Hired")
         }
         else {

@@ -34,8 +34,8 @@ function displayBusinessName () {
     display.innerHTML = currentBusiness.name
 }
 
+//Calls hire employee under current business ORM
 async function handleHire(form) {
-    console.log(currentBusiness)
     currentBusiness.hireEmployee(form);
 }
 
