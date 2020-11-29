@@ -261,9 +261,17 @@ app.post('/getProducts', (req, res) => {
     })
 })
 
+
+//Returns businesses that sell the provided item 
 app.post('/findSellers', (req, res) => {
     getSellersOfItem(req.body.item, result => {
         res.send({"result": result})
+    })
+})
+
+app.post('/getBusinessInventory', (req, res) => {
+    getBusinessInventory(req.body.business, result => {
+        res.send(result)
     })
 })
 
@@ -442,6 +450,20 @@ function getSellersOfItem(item, callback) {
     if(serverLogs) console.log("Finding sellers for item(" + item + ")")
 
     let query = "SELECT * FROM Quantity INNER JOIN Business ON Quantity.BusId = Business.BusId WHERE ItemNum = \"" + item + "\""
+
+    dataCon.query(query, (error, result) => {
+        if(error) console.log(error)
+        error ? callback(null) : callback(result)
+    })
+
+}
+
+//Returns items with quantity that business owns
+function getBusinessInventory(business, callback) {
+
+    if(serverLogs) console.log("Querying business(" + business + ") for its inventory")
+
+    let query = "SELECT * FROM Quantity INNER JOIN Items ON Quantity.ItemNum = Items.ItemNum WHERE BusId = " + business
 
     dataCon.query(query, (error, result) => {
         if(error) console.log(error)

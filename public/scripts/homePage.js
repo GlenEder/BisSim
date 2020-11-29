@@ -35,14 +35,51 @@ function displayBusinessName () {
 }
 
 //Calls hire employee under current business ORM
-async function handleHire(form) {
+async function handleHire (form) {
     currentBusiness.hireEmployee(form);
+}
+
+//Displays inventory of business 
+async function viewInventory () {
+    currentBusiness.getInventory(result => {
+        console.log("Iventory:", result)
+
+        //remove uneeded fields
+        for(var item in result) {
+            delete result[item].BusId
+            delete result[item].TypeId
+        }
+
+        console.log(result)
+
+        let headers = [
+            "Product ID",
+            "Current Quantity",
+            "Product Name",
+            "Brand",
+        ]
+
+        displayDataInTable(result, headers)
+
+    })
 }
 
 //renders employee table on home page
 async function viewEmployees () {
     currentBusiness.getEmployees(result => {
-        listEmployees(result)
+
+        //create headers for table
+        let headers = [
+            'EmployeeId', 
+            'BusinessId', 
+            'Name', 
+            'Birth Date', 
+            'Position', 
+            'Salary'
+        ]
+
+        //display data on site
+        displayDataInTable(result, headers)
     })
 }
 
@@ -56,14 +93,19 @@ function confirmBusinessDelete () {
     }
 }
 
-//creats list of employees with given employee array 
-function listEmployees(data) {
+
+//Displays given data in table on site with headers provided
+//@param data -- array of objects 
+//@param headers -- array of strings to label columns 
+//@param rowExtras -- html elements to add to each row at end 
+function displayDataInTable(data, headers) {
+
+    console.log(data)
 
     let table = document.createElement('table')
     //create table headers
     let theader = table.createTHead()
     let headRow = theader.insertRow()
-    let headers = ['EmployeeId', 'BusinessId', 'Name', 'Birth Date', 'Position', 'Salary']
     for(var idex in headers) {
         let th = document.createElement('th')
         let text = document.createTextNode(headers[idex])
@@ -83,50 +125,15 @@ function listEmployees(data) {
             cell.appendChild(text)
         }
 
-        let eId = data[index].EmpId
-        let bId = data[index].BusId
-
-        //skip fire button if owner
-        if(eId == localStorage.getItem('empId')) continue
-        
-
-        //add fire button cell
-        let fireCell = row.insertCell()
-        let fireButton = document.createElement("input")
-        fireButton.type = "button"
-        fireButton.value = "Fire Employee"
-        fireButton.style = "background-color: red"
-        
-        
-
-        fireButton.addEventListener('click', () => {
-           
-                let body = JSON.stringify({
-                    "EmpId": eId,
-                    "BusId": bId
-                })
-    
-                currentBusiness.fireEmployee(body, result => {
-                    if(result == "SUCCESS") {
-                        alert("Employee Fired")
-                        viewEmployees()
-                    }
-                    else {
-                        showError("Failed to fire employee")
-                    }
-                })
-        })
-        //add fire button
-        fireCell.appendChild(fireButton)
-    
     }
 
     //Add/Replace on document
-    let empDiv = document.getElementById("dataTable")
-    if(empDiv.childElementCount) {
-        empDiv.replaceChild(table, empDiv.lastChild)
+    let dataDiv = document.getElementById("dataTable")
+    if(dataDiv.childElementCount) {
+        dataDiv.replaceChild(table, dataDiv.lastChild)
     }
     else {
-        empDiv.appendChild(table)
+        dataDiv.appendChild(table)
     }
+
 }

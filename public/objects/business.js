@@ -78,4 +78,15 @@ class Business {
         //Return result message
         dataReceived.requestStatus == "ERROR" ? callback("ERROR: Could not delete business") : callback("SUCCESS: Business deleted")    
     }
+
+
+    //Calls server to get inventory of business 
+    async getInventory(callback) {
+        let body = JSON.stringify({
+            "business": this.id
+        })
+
+        callback(await fetchServer('/getBusinessInventory', body))
+    }
+
 }
