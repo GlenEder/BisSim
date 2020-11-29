@@ -261,10 +261,17 @@ app.post('/getProducts', (req, res) => {
     })
 })
 
+
+//Returns businesses that sell the provided item 
 app.post('/findSellers', (req, res) => {
     getSellersOfItem(req.body.item, result => {
         res.send({"result": result})
     })
+})
+
+app.post('/getBusinessInventory', (req, res) => {
+    console.log(req)
+    res.send({"result": "TESTING"})
 })
 
 app.listen(port, () => {
