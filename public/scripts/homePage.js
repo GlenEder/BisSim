@@ -44,6 +44,10 @@ async function handleHire (form) {
 
 //Displays inventory of business 
 async function viewInventory () {
+
+    //hide fire block 
+    document.getElementById("fireBlock").style.display = "none"
+
     currentBusiness.getInventory(result => {
 
         //remove uneeded fields
