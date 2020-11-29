@@ -56,8 +56,6 @@ function confirmBusinessDelete () {
     }
 }
 
-
-
 //creats list of employees with given employee array 
 function listEmployees(data) {
 
