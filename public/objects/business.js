@@ -11,6 +11,12 @@ class Business {
         this.address = databaseBusinessObject.Address
     }
 
+    //Calls server to fire an employee
+    async fireEmployee(body, callback) {
+        let dataReceived = await fetchServer('/fireEmployee', body)
+        callback(dataReceived.result)
+    } 
+
     //Calls server to remove employee from business in database
     async hireEmployee(form) {
 

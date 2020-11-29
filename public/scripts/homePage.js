@@ -39,6 +39,11 @@ async function handleHire(form) {
     currentBusiness.hireEmployee(form);
 }
 
+//Calls fire employee with current business
+async function handlFire(body, callback) {
+    currentBusiness.fireEmployee(body, callback)
+}
+
 //renders employee table on home page
 async function viewEmployees () {
     getBusinessEmployees(currentBusiness.id, result => {
@@ -53,5 +58,82 @@ function confirmBusinessDelete () {
             alert(result);
             if(result.includes("SUCCESS")) { location.href = '/'}
         })
+    }
+}
+
+
+
+//creats list of employees with given employee array 
+function listEmployees(data) {
+
+    let table = document.createElement('table')
+    //create table headers
+    let theader = table.createTHead()
+    let headRow = theader.insertRow()
+    let headers = ['EmployeeId', 'BusinessId', 'Name', 'Birth Date', 'Position', 'Salary']
+    for(var idex in headers) {
+        let th = document.createElement('th')
+        let text = document.createTextNode(headers[idex])
+        th.appendChild(text)
+        headRow.appendChild(th)
+    }
+
+    for(var index in data) {
+        //console.log(data[index])
+        //create entry row
+        let row = table.insertRow()
+
+        //fill row with data
+        for(var item in data[index]) {
+            let cell = row.insertCell()
+            let text = document.createTextNode(data[index][item])
+            cell.appendChild(text)
+        }
+
+        let eId = data[index].EmpId
+        let bId = data[index].BusId
+
+        //skip fire button if owner
+        if(eId == localStorage.getItem('empId')) continue
+        
+
+        //add fire button cell
+        let fireCell = row.insertCell()
+        let fireButton = document.createElement("input")
+        fireButton.type = "button"
+        fireButton.value = "Fire Employee"
+        fireButton.style = "background-color: red"
+        
+        
+
+        fireButton.addEventListener('click', () => {
+           
+                let body = JSON.stringify({
+                    "EmpId": eId,
+                    "BusId": bId
+                })
+    
+                currentBusiness.fireEmployee(body, result => {
+                    if(result == "SUCCESS") {
+                        alert("Employee Fired")
+                        location.href = "/home"
+                    }
+                    else {
+                        showError("Failed to fire employee")
+                    }
+                })
+        })
+        //add fire button
+        fireCell.appendChild(fireButton)
+    
+    }
+
+    //Add/Replace on document
+    let empDiv = document.getElementById("dataTable")
+    if(empDiv.childElementCount) {
+        empDiv.replaceChild(table, empDiv.lastChild)
+    }
+    else {
+        empDiv.appendChild(table)
     }
 }
