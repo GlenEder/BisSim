@@ -1,11 +1,10 @@
 //set onload for document
-window.addEventListener('load', displayBusinessName)
+window.addEventListener('load', loadBusiness)
+
 
 let currentBusiness = null
 
-async function displayBusinessName () {
-    let display = document.getElementById("businessName")
-
+async function loadBusiness () {
     //get current business 
     let bId = localStorage.getItem('busId')
 
@@ -16,12 +15,26 @@ async function displayBusinessName () {
     if(busData) {
         //create business object 
         currentBusiness = new Business(busData)
-        display.innerHTML = currentBusiness.name
     }
     else {
         showError("Could not retreive business")
         location.href = '/'
     }
+
+
+    //update business name if on home page
+    if(location.href.includes('/home')) { displayBusinessName() }
+}
+
+//Sets the business name on the home page
+function displayBusinessName () {
+    let display = document.getElementById("businessName")
+    if(display == undefined) { return }                     //check that we're on home page
+    display.innerHTML = currentBusiness.name
+}
+
+async function handleHire(form) {
+    currentBusiness.hireEmployee(form);
 }
 
 //renders employee table on home page

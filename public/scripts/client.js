@@ -212,47 +212,6 @@ async function getBusinessEmployees(businessID, callback) {
     callback(await fetchServer('/getBusinessEmployees', body))
 }
 
-//hires employee with given fields
-async function hireEmployee(form) {
-
-    //assign employee id
-    let newId = -1
-    let body = JSON.stringify({
-        "busID": localStorage.getItem("busId")
-    })
-
-    //get max emp id from server 
-    let dataRecieved = await fetchServer('getBusMaxEmpId', body)
-
-    newId = dataRecieved.maxID + 1
-
-    //check for error in query 
-    if(newId < 1) {
-        alert("ERROR: Could not create new employee")
-        return
-    }
-
-    body = JSON.stringify({
-        "EmpId": newId,
-        "BusId": localStorage.getItem("busId"),
-        "Name": document.getElementById("Name").value.trim(),
-        "BirthYear": document.getElementById("Birth").value,
-        "position": document.getElementById("Pos").value.trim(),
-        "Salary": document.getElementById("Salary").value
-    })
-
-    //call server to add new employee
-    dataReceived = await fetchServer('/hireNewEmployee', body)
-
-    if(dataRecieved != "ERROR") {
-        alert("SUCCESS: Employee Hired")
-    }
-    else {
-        alert("ERROR: Failed to Hire Employee")
-    }
-
-    location.href = '/home'
-}
 
 //fires employee with given fields
 async function fireEmployee(body, callback) {
