@@ -42,15 +42,12 @@ async function handleHire (form) {
 //Displays inventory of business 
 async function viewInventory () {
     currentBusiness.getInventory(result => {
-        console.log("Iventory:", result)
 
         //remove uneeded fields
         for(var item in result) {
             delete result[item].BusId
             delete result[item].TypeId
         }
-
-        console.log(result)
 
         let headers = [
             "Product ID",
@@ -100,7 +97,6 @@ function confirmBusinessDelete () {
 //@param rowExtras -- html elements to add to each row at end 
 function displayDataInTable(data, headers) {
 
-    console.log(data)
 
     let table = document.createElement('table')
     //create table headers
