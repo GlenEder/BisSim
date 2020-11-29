@@ -4,6 +4,9 @@ window.addEventListener('load', loadBusiness)
 //current business of user
 let currentBusiness = null
 
+//if user is viewing employees
+let employeeTableVisable = false
+
 //loads data from server about current business
 async function loadBusiness () {
     //get current business 
@@ -58,11 +61,14 @@ async function viewInventory () {
 
         displayDataInTable(result, headers)
 
+        employeeTableVisable = false
+
     })
 }
 
 //renders employee table on home page
 async function viewEmployees () {
+
     currentBusiness.getEmployees(result => {
 
         //create headers for table
@@ -77,6 +83,8 @@ async function viewEmployees () {
 
         //display data on site
         displayDataInTable(result, headers)
+
+        employeeTableVisable = true
     })
 }
 
@@ -118,6 +126,12 @@ async function fireEmployee () {
 
     currentBusiness.fireEmployee(id, result => {
         alert(result)
+        if(result == "SUCCESS") {
+            document.getElementById("fireBlock").style.display = "none"
+            if(employeeTableVisable) {
+                viewEmployees()
+            }
+        }
     })
 
 }
