@@ -44,13 +44,19 @@ async function viewInventory () {
     currentBusiness.getInventory(result => {
         console.log("Iventory:", result)
 
+        //remove uneeded fields
+        for(var item in result) {
+            delete result[item].BusId
+            delete result[item].TypeId
+        }
+
+        console.log(result)
+
         let headers = [
-            "Brand",
-            "Business Id",
+            "Product ID",
             "Current Quantity",
             "Product Name",
-            "Product Id",
-            "Product Type"
+            "Brand",
         ]
 
         displayDataInTable(result, headers)
