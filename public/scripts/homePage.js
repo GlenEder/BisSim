@@ -35,8 +35,15 @@ function displayBusinessName () {
 }
 
 //Calls hire employee under current business ORM
-async function handleHire(form) {
+async function handleHire (form) {
     currentBusiness.hireEmployee(form);
+}
+
+//Displays inventory of business 
+async function viewInventory () {
+    currentBusiness.getInventory(result => {
+        console.log("Iventory:", result)
+    })
 }
 
 //renders employee table on home page
