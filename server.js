@@ -456,3 +456,17 @@ function getSellersOfItem(item, callback) {
     })
 
 }
+
+//Returns items with quantity that business owns
+function getBusinessInventory(business, callback) {
+
+    if(serverLogs) console.log("Querying business(" + business + ") for its inventory")
+
+    let query = "SELECT * FROM Quantity INNER JOIN Items ON Quantity.ItemNum = Items.ItemNum WHERE BusId = " + business
+
+    dataCon.query(query, (error, result) => {
+        if(error) console.log(error)
+        error ? callback(null) : callback(result)
+    })
+
+}
