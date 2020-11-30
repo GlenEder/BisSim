@@ -7,6 +7,12 @@ let currentBusiness = null
 //if user is viewing employees
 let employeeTableVisable = false
 
+//TABLE VALUES
+const EMPLOYEE_TABLE = 1
+const INVENTORY_TABLE = 2
+const TRANSACTION_TABLE = 3
+
+
 //loads data from server about current business
 async function loadBusiness () {
     //get current business 
@@ -45,9 +51,6 @@ async function handleHire (form) {
 //Displays inventory of business 
 async function viewInventory () {
 
-    //hide fire block 
-    document.getElementById("fireBlock").style.display = "none"
-
     currentBusiness.getInventory(result => {
 
         //remove uneeded fields
@@ -63,7 +66,7 @@ async function viewInventory () {
             "Brand",
         ]
 
-        displayDataInTable(result, headers)
+        displayDataInTable(result, headers, INVENTORY_TABLE)
 
         employeeTableVisable = false
 
@@ -86,7 +89,7 @@ async function viewEmployees () {
         ]
 
         //display data on site
-        displayDataInTable(result, headers)
+        displayDataInTable(result, headers, EMPLOYEE_TABLE)
 
         employeeTableVisable = true
     })
@@ -143,10 +146,7 @@ async function fireEmployee () {
 //Displays transactions of business 
 async function showTransactions () {
 
-    console.log("Getting transactions")
     currentBusiness.getTransactions(result => {
-        console.log(result)
-
         let headers = [
             "Bought/Sold",
             "Transaction Id",
@@ -166,10 +166,7 @@ async function showTransactions () {
             }
         }
 
-        displayDataInTable(result, headers)
-
-        //show sorting buttons 
-        document.getElementById("transSort").style.display = "block"
+        displayDataInTable(result, headers, TRANSACTION_TABLE)
     })
 
     
@@ -182,8 +179,21 @@ async function showTransactions () {
 //Displays given data in table on site with headers provided
 //@param data -- array of objects 
 //@param headers -- array of strings to label columns 
-//@param rowExtras -- html elements to add to each row at end 
-function displayDataInTable(data, headers) {
+//@param tableBeingShown -- value of table being shown
+function displayDataInTable(data, headers, tableBeingShown) {
+
+    switch(tableBeingShown) {
+        case EMPLOYEE_TABLE:
+            document.getElementById("transSort").style.display = "none"
+            break;
+        case TRANSACTION_TABLE:
+            document.getElementById("transSort").style.display = "block"
+            document.getElementById("fireBlock").style.display = "none"
+            break;
+        case INVENTORY_TABLE:
+            document.getElementById("transSort").style.display = "none"
+            document.getElementById("fireBlock").style.display = "none"
+    }
 
 
     let table = document.createElement('table')
