@@ -93,4 +93,11 @@ class Business {
         callback(await fetchServer('/getBusinessInventory', body))
     }
 
+    //Calls server to get transactions of business 
+    async getTransactions(callback) {
+
+        console.log("calling server for transactions")
+
+    }
+
 }
