@@ -152,7 +152,14 @@ async function showTransactions (orderby) {
 
     //calc profit if table isnt already showing
     if(!transTableVisable) {
-    
+        currentBusiness.getProfit(result => {
+
+            console.log(result)
+
+            if(result) {
+                document.getElementById("profit").innerHTML = "Current Profit: " + result
+            }
+        })
     }
 
     //swap direction of sort if same order by 
