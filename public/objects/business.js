@@ -104,4 +104,12 @@ class Business {
         callback(await fetchServer('/getBusinessTransactions', body))
     }
 
+    //Calls server to get business profit
+    async getProfit(callback) {
+        let body = JSON.stringify({
+            "business": this.id
+        })
+        callback(await fetchServer('/getBusinessProfit', body))
+    }
+
 }
