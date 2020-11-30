@@ -95,9 +95,10 @@ class Business {
 
     //Calls server to get transactions of business 
     async getTransactions(callback) {
-
-        console.log("calling server for transactions")
-
+        let body = JSON.stringify({
+            "business": this.id
+        })
+        callback(await fetchServer('/getBusinessTransactions', body))
     }
 
 }
