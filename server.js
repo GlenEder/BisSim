@@ -486,15 +486,25 @@ function getBusinessTransactions(business, callback) {
 
     if(serverLogs) console.log("Retreiving transactions of business(" + business +")")
 
-    let query = "SELECT DISTINCT * FROM Buy, Sell WHERE Buy.BusId = " + business +
-     " AND Sell.BusId = " + business 
- 
+    getBusinessPurchases(business, result => {
 
-    dataCon.query(query, (error, result) => {
-        if(error) console.log(error)
-        error ? callback(null) : callback(result)
+        //check for error
+        if(result) {
+            callback(result)
+        }
+        else callback(null)
+
     })
 
 }
 
 //Returns all purchases of a business
+function getBusinessPurchases(business, callback) {
+    if(serverLogs) console.log("Retreiving purchases of business(" + business +")")
+    
+    let query = "SELECT * FROM Buy WHERE BusId = " + business
+    dataCon.query(query, (error, result) => {
+        if(error) console.log(error)
+        error ? callback(null) : callback(result)
+    })
+}
