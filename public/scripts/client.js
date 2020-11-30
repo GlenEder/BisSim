@@ -195,3 +195,8 @@ function isOlderDate(d1, d2) {
 function transactionSort(a, b) {
     return isOlderDate(a.Date, b.Date)
 }
+
+//Opposite sort helper for sorting date results 
+function oppoTransactionSort(a, b) {
+    return isOlderDate(b.Date, a.Date)
+}

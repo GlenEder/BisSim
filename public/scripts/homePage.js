@@ -180,7 +180,8 @@ async function showTransactions (orderby) {
 
         //manually sort by date because sql order by is lame
         if(orderby == "Date") {
-            result.sort(transactionSort)
+            if(tranDesc) result.sort(transactionSort)
+            else result.sort(oppoTransactionSort)
         }
 
         displayDataInTable(result, headers, TRANSACTION_TABLE)
