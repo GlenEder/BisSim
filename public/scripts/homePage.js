@@ -140,6 +140,13 @@ async function fireEmployee () {
 
 }
 
+//Displays transactions of business 
+async function showTransactions () {
+
+    console.log("Getting transactions")
+
+}
+
 
 
 
