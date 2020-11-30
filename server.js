@@ -471,3 +471,17 @@ function getBusinessInventory(business, callback) {
     })
 
 }
+
+//Returns all sells and buys of provided business 
+function getBusinessTransactions(business, callback) {
+
+    if(serverLogs) console.log("Retreiving transactions of business(" + business +")")
+
+    let querey = "SELECT * FROM BUY, SELL WHERE BusId = " + business
+
+    dataCon.query(query, (error, result) => {
+        if(error) console.log(error)
+        error ? callback(null) : callback(result)
+    })
+
+}
