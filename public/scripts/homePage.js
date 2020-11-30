@@ -167,6 +167,9 @@ async function showTransactions () {
         }
 
         displayDataInTable(result, headers)
+
+        //show sorting buttons 
+        document.getElementById("transSort").style.display = "block"
     })
 
     
