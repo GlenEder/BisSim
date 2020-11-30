@@ -278,7 +278,8 @@ app.post('/getBusinessInventory', (req, res) => {
 
 //Returns business's transactions
 app.post('/getBusinessTransactions', (req, res) => {
-    getBusinessTransactions(req.body.business, req.body.orderby, result => {
+    console.log(req.body)
+    getBusinessTransactions(req.body.business, req.body.orderby, req.body.desc, result => {
         res.send(result)
     })
 })
@@ -482,14 +483,17 @@ function getBusinessInventory(business, callback) {
 }
 
 //Returns all sells and buys of provided business 
-function getBusinessTransactions(business, orderby, callback) {
+function getBusinessTransactions(business, orderby, desc, callback) {
 
-    if(serverLogs) console.log("Retreiving transactions of business(" + business +") ordered by " + orderby)
+    if(serverLogs) console.log("Retreiving transactions of business(" + business +") ordered by " + orderby + ", DESC = " + desc)
 
     let query = "SELECT *, 1 as Sold FROM Sell WHERE BusId = " + business + 
                 " UNION SELECT *, 0 as Sold FROM Buy WHERE BusId = " + business + 
                 " ORDER BY " + orderby
-
+    if(desc) {
+        query += " DESC"
+    }
+    
     dataCon.query(query, (error, result) => {
         if(error) console.log(error)
         error ? callback(null) : callback(result)

@@ -12,6 +12,9 @@ const EMPLOYEE_TABLE = 1
 const INVENTORY_TABLE = 2
 const TRANSACTION_TABLE = 3
 
+//last order by for trans table 
+let tranOrder = ""
+let tranDesc = true
 
 //loads data from server about current business
 async function loadBusiness () {
@@ -146,7 +149,14 @@ async function fireEmployee () {
 //Displays transactions of business 
 async function showTransactions (orderby) {
 
-    currentBusiness.getTransactions(orderby, result => {
+    //swap direction of sort if same order by 
+    if(orderby == tranOrder) {
+        tranDesc = !tranDesc
+    }
+    //update transaction order
+    tranOrder = orderby
+
+    currentBusiness.getTransactions(orderby, tranDesc, result => {
         let headers = [
             "Bought/Sold",
             "Transaction Id",
