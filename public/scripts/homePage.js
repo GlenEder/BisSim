@@ -146,7 +146,30 @@ async function showTransactions () {
     console.log("Getting transactions")
     currentBusiness.getTransactions(result => {
         console.log(result)
+
+        let headers = [
+            "Bought/Sold",
+            "Transaction Id",
+            "ItemNum",
+            "Quantity",
+            "Date",
+            "Price Per Unit"
+        ]
+
+        //change business id to bought or sold 
+        for(var item in result) {
+            if(result[item].QuantitySold) {
+                result[item].BusId = "Sold"
+            }
+            else {
+                result[item].BusId = "Bought"
+            }
+        }
+
+        displayDataInTable(result, headers)
     })
+
+    
 
 }
 
