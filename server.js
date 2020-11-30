@@ -269,11 +269,20 @@ app.post('/findSellers', (req, res) => {
     })
 })
 
+//Returns business's inventory 
 app.post('/getBusinessInventory', (req, res) => {
     getBusinessInventory(req.body.business, result => {
         res.send(result)
     })
 })
+
+//Returns business's transactions
+app.post('/getBusinessTransactions', (req, res) => {
+    getBusinessTransactions(req.body.business, result => {
+        res.send(result)
+    })
+})
+
 
 app.listen(port, () => {
     console.log('Express app listening on http://localhost:', port)
