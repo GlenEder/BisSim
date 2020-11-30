@@ -283,7 +283,12 @@ app.post('/getBusinessTransactions', (req, res) => {
     })
 })
 
-
+//Returns business's profit margin
+app.post('/getBusinessProfit', (req, res) => {
+    getBusinessProfit(req.body.business, result => {
+        res.send(result)
+    })
+})
 
 app.listen(port, () => {
     console.log('Express app listening on http://localhost:', port)
