@@ -144,6 +144,9 @@ async function fireEmployee () {
 async function showTransactions () {
 
     console.log("Getting transactions")
+    currentBusiness.getTransactions(result => {
+        console.log(result)
+    })
 
 }
 
