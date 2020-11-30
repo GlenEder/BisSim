@@ -278,7 +278,6 @@ app.post('/getBusinessInventory', (req, res) => {
 
 //Returns business's transactions
 app.post('/getBusinessTransactions', (req, res) => {
-    console.log(req.body)
     getBusinessTransactions(req.body.business, req.body.orderby, req.body.desc, result => {
         res.send(result)
     })
