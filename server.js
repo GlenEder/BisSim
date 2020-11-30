@@ -283,6 +283,12 @@ app.post('/getBusinessTransactions', (req, res) => {
     })
 })
 
+//Returns business's profit margin
+app.post('/getBusinessProfit', (req, res) => {
+    getBusinessProfit(req.body.business, result => {
+        res.send(result)
+    })
+})
 
 app.listen(port, () => {
     console.log('Express app listening on http://localhost:', port)
@@ -516,6 +522,20 @@ function getBusinessPurchases(business, callback) {
     if(serverLogs) console.log("Retreiving purchases of business(" + business +")")
     
     let query = "SELECT * FROM Buy WHERE BusId = " + business
+    dataCon.query(query, (error, result) => {
+        if(error) console.log(error)
+        error ? callback(null) : callback(result)
+    })
+}
+
+//Returns sum of sells - sum of buys 
+function getBusinessProfit(business, callback) {
+    if(serverLogs) console.log("Calculating business(" + business + ") profit margin")
+
+    let query = "SELECT (Gains - Loss) as Profit FROM (" +
+                "SELECT SUM(QuantitySold * Price) as Gains FROM Sell WHERE BusId = " + business + ")g, (" +
+                "SELECT SUM(QuantityBought * Price) as Loss FROM Buy WHERE BusId = " + business + ")l"
+
     dataCon.query(query, (error, result) => {
         if(error) console.log(error)
         error ? callback(null) : callback(result)
