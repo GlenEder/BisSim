@@ -486,19 +486,11 @@ function getBusinessTransactions(business, callback) {
 
     if(serverLogs) console.log("Retreiving transactions of business(" + business +")")
 
-    getBusinessPurchases(business, result => {
-        //check for error in first query
-        if(result) {
-            getBusinessSells(business, secondResult => {
-                //combine two results
-                for(var item in result) {
-                    secondResult.push(result[item])
-                }
+    let query = "SELECT * FROM Sell WHERE BusId = " + business + " UNION SELECT * FROM Buy WHERE BusId = " + business
 
-                callback(secondResult)
-            })
-        }
-        else callback(null)
+    dataCon.query(query, (error, result) => {
+        if(error) console.log(error)
+        error ? callback(null) : callback(result)
     })
 
 }
