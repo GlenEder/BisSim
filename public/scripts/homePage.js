@@ -6,6 +6,7 @@ let currentBusiness = null
 
 //if user is viewing employees
 let employeeTableVisable = false
+let transTableVisable = false
 
 //TABLE VALUES
 const EMPLOYEE_TABLE = 1
@@ -149,6 +150,11 @@ async function fireEmployee () {
 //Displays transactions of business 
 async function showTransactions (orderby) {
 
+    //calc profit if table isnt already showing
+    if(!transTableVisable) {
+    
+    }
+
     //swap direction of sort if same order by 
     if(orderby == tranOrder) {
         tranDesc = !tranDesc
@@ -203,12 +209,17 @@ function displayDataInTable(data, headers, tableBeingShown) {
     switch(tableBeingShown) {
         case EMPLOYEE_TABLE:
             document.getElementById("transSort").style.display = "none"
+            transTableVisable = false
             break;
         case TRANSACTION_TABLE:
+            transTableVisable = true
+            employeeTableVisable = false
             document.getElementById("transSort").style.display = "block"
             document.getElementById("fireBlock").style.display = "none"
             break;
         case INVENTORY_TABLE:
+            transTableVisable = false
+            employeeTableVisable = false
             document.getElementById("transSort").style.display = "none"
             document.getElementById("fireBlock").style.display = "none"
     }
