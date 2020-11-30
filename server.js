@@ -487,15 +487,31 @@ function getBusinessTransactions(business, callback) {
     if(serverLogs) console.log("Retreiving transactions of business(" + business +")")
 
     getBusinessPurchases(business, result => {
-
-        //check for error
+        //check for error in first query
         if(result) {
-            callback(result)
+            getBusinessSells(business, secondResult => {
+                //combine two results
+                for(var item in result) {
+                    secondResult.push(result[item])
+                }
+
+                callback(secondResult)
+            })
         }
         else callback(null)
-
     })
 
+}
+
+//Returns sells of business 
+function getBusinessSells(business, callback) {
+    if(serverLogs) console.log("Getting sells of business(" + business + ")")
+
+    let query = "SELECT * FROM Sell WHERE BusId = " + business
+    dataCon.query(query, (error, result) => {
+        if(error) console.log(error)
+        error ? callback(null) : callback(result)
+    })
 }
 
 //Returns all purchases of a business
