@@ -94,9 +94,13 @@ class Business {
     }
 
     //Calls server to get transactions of business 
-    async getTransactions(callback) {
+    async getTransactions(orderby, callback) {
+
+        console.log(orderby)
+    
         let body = JSON.stringify({
-            "business": this.id
+            "business": this.id,
+            "orderby": orderby
         })
         callback(await fetchServer('/getBusinessTransactions', body))
     }

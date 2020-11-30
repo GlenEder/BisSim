@@ -144,9 +144,9 @@ async function fireEmployee () {
 }
 
 //Displays transactions of business 
-async function showTransactions () {
+async function showTransactions (orderby) {
 
-    currentBusiness.getTransactions(result => {
+    currentBusiness.getTransactions(orderby, result => {
         let headers = [
             "Bought/Sold",
             "Transaction Id",
