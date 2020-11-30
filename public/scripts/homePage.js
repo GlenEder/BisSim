@@ -7,6 +7,15 @@ let currentBusiness = null
 //if user is viewing employees
 let employeeTableVisable = false
 
+//TABLE VALUES
+const EMPLOYEE_TABLE = 1
+const INVENTORY_TABLE = 2
+const TRANSACTION_TABLE = 3
+
+//last order by for trans table 
+let tranOrder = ""
+let tranDesc = true
+
 //loads data from server about current business
 async function loadBusiness () {
     //get current business 
@@ -45,9 +54,6 @@ async function handleHire (form) {
 //Displays inventory of business 
 async function viewInventory () {
 
-    //hide fire block 
-    document.getElementById("fireBlock").style.display = "none"
-
     currentBusiness.getInventory(result => {
 
         //remove uneeded fields
@@ -63,7 +69,7 @@ async function viewInventory () {
             "Brand",
         ]
 
-        displayDataInTable(result, headers)
+        displayDataInTable(result, headers, INVENTORY_TABLE)
 
         employeeTableVisable = false
 
@@ -86,7 +92,7 @@ async function viewEmployees () {
         ]
 
         //display data on site
-        displayDataInTable(result, headers)
+        displayDataInTable(result, headers, EMPLOYEE_TABLE)
 
         employeeTableVisable = true
     })
@@ -140,14 +146,72 @@ async function fireEmployee () {
 
 }
 
+//Displays transactions of business 
+async function showTransactions (orderby) {
+
+    //swap direction of sort if same order by 
+    if(orderby == tranOrder) {
+        tranDesc = !tranDesc
+    }
+    //update transaction order
+    tranOrder = orderby
+
+    currentBusiness.getTransactions(orderby, tranDesc, result => {
+        let headers = [
+            "Bought/Sold",
+            "Transaction Id",
+            "ItemNum",
+            "Quantity",
+            "Date",
+            "Price Per Unit"
+        ]
+
+        //change business id to bought or sold 
+        for(var item in result) {
+            if(result[item].Sold) {
+                result[item].BusId = "Sold"
+            }
+            else {
+                result[item].BusId = "Bought"
+            }
+
+            delete result[item].Sold
+        }
+
+        //manually sort by date because sql order by is lame
+        if(orderby == "Date") {
+            if(tranDesc) result.sort(transactionSort)
+            else result.sort(oppoTransactionSort)
+        }
+
+        displayDataInTable(result, headers, TRANSACTION_TABLE)
+    })
+
+    
+
+}
+
 
 
 
 //Displays given data in table on site with headers provided
 //@param data -- array of objects 
 //@param headers -- array of strings to label columns 
-//@param rowExtras -- html elements to add to each row at end 
-function displayDataInTable(data, headers) {
+//@param tableBeingShown -- value of table being shown
+function displayDataInTable(data, headers, tableBeingShown) {
+
+    switch(tableBeingShown) {
+        case EMPLOYEE_TABLE:
+            document.getElementById("transSort").style.display = "none"
+            break;
+        case TRANSACTION_TABLE:
+            document.getElementById("transSort").style.display = "block"
+            document.getElementById("fireBlock").style.display = "none"
+            break;
+        case INVENTORY_TABLE:
+            document.getElementById("transSort").style.display = "none"
+            document.getElementById("fireBlock").style.display = "none"
+    }
 
 
     let table = document.createElement('table')

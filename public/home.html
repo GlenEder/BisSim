@@ -16,8 +16,15 @@
             <input type="button" value="Fire Employee" onclick="showFireEmployee()" />
             <input type="button" value="View Inventory" onclick="viewInventory()"/>
             <input type="button" value="Buy Product" onclick="location.href='/market'"/>
+            <input type="button" value="Show Transactions" onclick="showTransactions('Date')"/>
             <input type="button" value="Logout" onclick="location.href='/'" />
             <input type="button" value="Delete Business" onclick="confirmBusinessDelete()" />
+        </div>
+        <div id="transSort">
+            <label>Sorting Options:</label>
+            <input type="button" value="Method" onclick="showTransactions('Sold')"/>
+            <input type="button" value="Transaction" onclick="showTransactions('TranId')"/>
+            <input type="button" value="Date" onclick="showTransactions('Date')"/>
         </div>
         <div id="dataTable"></div>
         

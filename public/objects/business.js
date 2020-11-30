@@ -93,4 +93,15 @@ class Business {
         callback(await fetchServer('/getBusinessInventory', body))
     }
 
+    //Calls server to get transactions of business 
+    async getTransactions(orderby, descending, callback) {
+    
+        let body = JSON.stringify({
+            "business": this.id,
+            "orderby": orderby,
+            "desc": descending
+        })
+        callback(await fetchServer('/getBusinessTransactions', body))
+    }
+
 }
