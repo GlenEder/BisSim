@@ -536,9 +536,6 @@ function getBusinessProfit(business, callback) {
                 "SELECT SUM(QuantitySold * Price) as Gains FROM Sell WHERE BusId = " + business + ")g, (" +
                 "SELECT SUM(QuantityBought * Price) as Loss FROM Buy WHERE BusId = " + business + ")l"
 
-
-    console.log(query)
-
     dataCon.query(query, (error, result) => {
         if(error) console.log(error)
         error ? callback(null) : callback(result)
