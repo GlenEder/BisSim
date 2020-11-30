@@ -158,7 +158,7 @@ async function showTransactions () {
 
         //change business id to bought or sold 
         for(var item in result) {
-            if(result[item].QuantitySold) {
+            if(result[item].Sold) {
                 result[item].BusId = "Sold"
             }
             else {

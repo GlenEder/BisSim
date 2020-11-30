@@ -486,7 +486,7 @@ function getBusinessTransactions(business, callback) {
 
     if(serverLogs) console.log("Retreiving transactions of business(" + business +")")
 
-    let query = "SELECT * FROM Sell WHERE BusId = " + business + " UNION SELECT * FROM Buy WHERE BusId = " + business
+    let query = "SELECT *, 1 as Sold FROM Sell WHERE BusId = " + business + " UNION SELECT *, 0 as Sold FROM Buy WHERE BusId = " + business
 
     dataCon.query(query, (error, result) => {
         if(error) console.log(error)
