@@ -164,6 +164,8 @@ async function showTransactions () {
             else {
                 result[item].BusId = "Bought"
             }
+
+            delete result[item].Sold
         }
 
         displayDataInTable(result, headers, TRANSACTION_TABLE)
