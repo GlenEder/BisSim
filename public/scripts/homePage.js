@@ -168,15 +168,9 @@ async function showTransactions (orderby) {
             delete result[item].Sold
         }
 
-        //Manually sort by date because fuck me 
+        //manually sort by date because sql order by is lame
         if(orderby == "Date") {
-
-            let dateSorted = []
-            dateSorted.push(result[0])      //add first element
-            for(var i = 1; i < result.length; i++) {
-                
-            }
-
+            result.sort(transactionSort)
         }
 
         displayDataInTable(result, headers, TRANSACTION_TABLE)

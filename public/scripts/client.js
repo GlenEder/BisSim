@@ -161,13 +161,13 @@ async function fetchServer(command, body) {
 
 //returns true if the date string 1 is older than string 2
 function isOlderDate(d1, d2) {
-
+    
     //compare years
     let d1Year = Number(d1.substring(d1.length - 4))
-    let d2Year = Number(d2.substring(d1.length - 4))
+    let d2Year = Number(d2.substring(d2.length - 4))
 
-    if(d1Year < d2Year) return true
-    if(d1Year > d2Year) return false
+    if(d1Year < d2Year) return 1
+    if(d1Year > d2Year) return -1
 
     //compare months
     let d1FirstSlash = d1.indexOf("/")
@@ -175,8 +175,8 @@ function isOlderDate(d1, d2) {
     let d1Month = Number(d1.substring(0, d1FirstSlash))
     let d2Month = Number(d2.substring(0, d2FirstSlash))
 
-    if(d1Month < d2Month) return true
-    if(d1Month > d2Month) return false
+    if(d1Month < d2Month) return 1
+    if(d1Month > d2Month) return -1
 
     //compare day
     let d1SecSlash = d1.indexOf("/", d1FirstSlash + 1)
@@ -184,9 +184,14 @@ function isOlderDate(d1, d2) {
     let d1Day = Number(d1.substring(d1FirstSlash + 1, d1SecSlash))
     let d2Day = Number(d2.substring(d2FirstSlash + 1, d2SecSlash))
 
-    if(d1Day < d2Day) return true
+    if(d1Day < d2Day) return 1
 
     //same day or younger
-    return false
+    return -1
 
+}
+
+//Transaction sort helper method for sorting by date
+function transactionSort(a, b) {
+    return isOlderDate(a.Date, b.Date)
 }
