@@ -532,7 +532,12 @@ function getBusinessPurchases(business, callback) {
 function getBusinessProfit(business, callback) {
     if(serverLogs) console.log("Calculating business(" + business + ") profit margin")
 
-    let query = "SELECT SUM(QuantityBought * Price) FROM Buy WHERE BusId = " + business
+    let query = "SELECT (Gains - Loss) as Profit FROM (" +
+                "SELECT SUM(QuantitySold * Price) as Gains FROM Sell WHERE BusId = " + business + ")g, (" +
+                "SELECT SUM(QuantityBought * Price) as Loss FROM Buy WHERE BusId = " + business + ")l"
+
+
+    console.log(query)
 
     dataCon.query(query, (error, result) => {
         if(error) console.log(error)

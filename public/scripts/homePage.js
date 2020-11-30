@@ -157,7 +157,7 @@ async function showTransactions (orderby) {
             console.log(result)
 
             if(result) {
-                document.getElementById("profit").innerHTML = "Current Profit: " + result
+                document.getElementById("profit").innerHTML = "Current Profit: " + result[0].Profit
             }
         })
     }
