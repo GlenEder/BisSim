@@ -13,6 +13,8 @@ const serverLogs = true
 
 //init database 
 const mysql = require('mysql')
+const oldHostIp = '35.i84.255.168'
+const newHostIp = '69.174.157.112'
 const dataCon = mysql.createConnection({
     host: '35.184.255.168',
     user: 'root', 
